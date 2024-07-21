@@ -12,4 +12,11 @@ public class UserIMX {
     String edition;
     Boolean isAuthForBuyAndSell;
     Long governmentID;
+    public  static class Builder {
+        UserIMX userIMX;
+        public UserIMX build(){
+            this.userIMX = new UserIMX();
+            return this.userIMX;
+        }
+    }
 }
