@@ -1,4 +1,4 @@
-package com.services;
+package com.immutable.services;
 
 public interface ServiceInterface {
 }
