@@ -1,5 +1,4 @@
 package com.immutable.request.accounts;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +6,12 @@ import lombok.Setter;
 public class CustodianIMX extends  UserIMX{
     long orgId;
     long securityId;
-   public CustodianIMX(){
-   }
+     public static class Builder {
+         CustodianIMX custodianIMX;
+        public  CustodianIMX build(){
+            this.custodianIMX =  new CustodianIMX();
+            return  custodianIMX;
+        }
+
+    }
 }
