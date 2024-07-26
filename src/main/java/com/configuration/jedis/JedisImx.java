@@ -1,14 +1,15 @@
 package com.configuration.jedis;
 import redis.clients.jedis.Jedis;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-public class JedisImx implements IJedis {
+abstract class JedisImx implements IJedis {
     Jedis jediss;
-    public  JedisImx(){
-        this.jediss = new Jedis();
+    public  JedisImx(String token){
+        this.jediss =  new Jedis("exciting-rattler-44268.upstash.io", 6379, true);
+        this.jediss.auth(token);
     }
     @Override
     public byte[] getByByte(byte[] param) {
@@ -31,8 +32,13 @@ public class JedisImx implements IJedis {
     }
 
     @Override
-    public List<String> mGet(String key) {
-        return Collections.singletonList(this.jediss.mset(key));
+    public  String setByString(String key, String vale){
+        return  this.jediss.set(key,vale);
+    }
+
+    @Override
+    public List<String> mGet(String... key) {
+        return this.jediss.mget(key);
     }
 
     @Override
@@ -43,5 +49,25 @@ public class JedisImx implements IJedis {
     @Override
     public String hGetByString(String key,String field) {
         return this.jediss.hget(key,field);
+    }
+
+    @Override
+    public String setByByte(byte[] key, byte[] value) {
+        return this.jediss.set(key,value);
+    }
+
+    @Override
+    public long setRangeByByte(byte[] key, long offset, byte[] value) {
+        return this.jediss.setrange(key,offset,value);
+    }
+
+    @Override
+    public String mSet(String... key) {
+        return this.jediss.mset(key);
+    }
+
+    @Override
+    public long hSetByString(String key, Map<String, String> field) {
+        return this.jediss.hset(key,field);
     }
 }
