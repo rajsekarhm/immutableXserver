@@ -1,37 +1,25 @@
 package com.immutable.request.entities;
 
-public class Entities implements IEntitiesHandlers<String> {
+import com.immutable.request.accounts.UserDAO;
 
-    public String createUser(){
-        return "";
-    }
-    public String getUser(){
-        return "";
-    }
-    public String updateUser(){
-        return "";
-    }
-    public String deleteUser(){
-        return "";
+public class Entities implements IEntitiesHandlers<UserDAO> {
+    @Override
+    public UserDAO createUser() {
+        return null;
     }
 
     @Override
-    public String createUser(String createUserObj) {
-        return "";
+    public UserDAO getUser() {
+        return null;
     }
 
     @Override
-    public String getUser(String getUserObj) {
-        return "";
+    public UserDAO updateUser() {
+        return null;
     }
 
     @Override
-    public String updateUser(String updateUserObj) {
-        return "";
-    }
-
-    @Override
-    public String deleteUser(String deleteUserObj) {
-        return "";
+    public UserDAO deleteUser() {
+        return null;
     }
 }

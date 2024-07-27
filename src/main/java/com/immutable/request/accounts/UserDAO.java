@@ -12,10 +12,11 @@ public class UserDAO {
     String edition;
     Boolean isAuthForBuyAndSell;
     Long governmentID;
-
-     static class Builder{
-        public  UserDAO build(){
-           return  new UserDAO();
+    public  static class Builder {
+        UserDAO userIMX;
+        public UserDAO build(){
+            this.userIMX = new UserDAO();
+            return this.userIMX;
         }
     }
 }

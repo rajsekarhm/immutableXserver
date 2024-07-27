@@ -1,12 +1,11 @@
 package com.immutable.request;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RestController @Component
+@RestController
 public class RequestDemo {
     @RequestMapping("/hello")
     public  String printHello(){
