@@ -21,7 +21,7 @@ public class CustodianDAOImpl {
     public  void  deleteCustodian(@RequestBody CustodianDAO deleteCustodian){
 
     }
-    @RequestMapping("/getCustodian")
+    @RequestMapping(value = "/getCustodian")
     public  void getCustodian(@RequestBody CustodianDAO getUser){
 
     }
