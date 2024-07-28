@@ -7,9 +7,12 @@ import lombok.Setter;
 public class CustodianDAO extends UserDAO {
     long orgId;
     long securityId;
-    static  public  class  Builder{
+    public static class Builder {
+        CustodianDAO custodianDAO;
         public  CustodianDAO build(){
-            return new CustodianDAO();
+            this.custodianDAO =  new CustodianDAO();
+            return  custodianDAO;
         }
+
     }
 }

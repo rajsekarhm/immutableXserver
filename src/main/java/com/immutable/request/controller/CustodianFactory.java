@@ -1,9 +1,9 @@
 package com.immutable.request.controller;
 
-import com.immutable.request.accounts.CustodianIMX;
+import com.immutable.request.accounts.CustodianDAO;
 
-public class CustodianFactory implements AccountFactory<CustodianIMX> {
-    public  CustodianIMX create(CustodianIMX createEntity){
-        return new CustodianIMX.Builder().build();
+public class CustodianFactory implements AccountFactory<CustodianDAO> {
+    public CustodianDAO create(CustodianDAO createEntity){
+        return new CustodianDAO.Builder().build();
     }
 }
