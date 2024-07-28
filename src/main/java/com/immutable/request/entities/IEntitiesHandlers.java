@@ -2,8 +2,8 @@ package com.immutable.request.entities;
 
 public interface IEntitiesHandlers<T> {
 
-    public T createUser(T createEntity);
-//    public T getUser(T getEntity);
-//    public T updateUser(T updateEntity);
-//    public T deleteUser(T deleteEntity);
+    public T createUser();
+    public T getUser();
+    public T updateUser();
+    public T deleteUser();
 }

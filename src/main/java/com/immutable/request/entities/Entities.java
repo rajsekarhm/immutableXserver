@@ -1,25 +1,25 @@
 package com.immutable.request.entities;
 
-import com.immutable.request.accounts.UserIMX;
-import com.immutable.request.controller.AccountFactory;
-import com.immutable.request.controller.UserFactory;
+import com.immutable.request.accounts.UserDAO;
 
-public class Entities implements IEntitiesHandlers<UserIMX> {
-
-    public UserIMX createUser(UserIMX account){
-        AccountFactory<UserIMX> factory =  new UserFactory();
-        return factory.create(account);
+public class Entities implements IEntitiesHandlers<UserDAO> {
+    @Override
+    public UserDAO createUser() {
+        return null;
     }
-//    public UserIMX getUser(){
-//        UserIMX user = new UserIMX();
-//        return user;
-//    }
-//    public UserIMX updateUser(){
-//        UserIMX user = new UserIMX();
-//        return user;
-//    }
-//    public UserIMX deleteUser(){
-//        UserIMX user = new UserIMX();
-//        return user;
-//    }
+
+    @Override
+    public UserDAO getUser() {
+        return null;
+    }
+
+    @Override
+    public UserDAO updateUser() {
+        return null;
+    }
+
+    @Override
+    public UserDAO deleteUser() {
+        return null;
+    }
 }

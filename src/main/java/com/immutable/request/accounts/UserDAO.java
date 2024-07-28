@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class UserIMX {
+public class UserDAO {
     String userName;
     String email;
     Boolean isAgent;
@@ -13,9 +13,9 @@ public class UserIMX {
     Boolean isAuthForBuyAndSell;
     Long governmentID;
     public  static class Builder {
-        UserIMX userIMX;
-        public UserIMX build(){
-            this.userIMX = new UserIMX();
+        UserDAO userIMX;
+        public UserDAO build(){
+            this.userIMX = new UserDAO();
             return this.userIMX;
         }
     }

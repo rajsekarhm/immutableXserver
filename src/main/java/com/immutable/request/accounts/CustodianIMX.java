@@ -3,7 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CustodianIMX extends  UserIMX{
+public class CustodianIMX extends  UserDAO{
     long orgId;
     long securityId;
      public static class Builder {
