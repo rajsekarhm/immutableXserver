@@ -11,8 +11,9 @@ public class UserDAO {
     private Boolean isAuthForBuyAndSell;
     private Long governmentID;
 
+    public  UserDAO(){}
 
-    public UserDAO(Builder builder) {
+    UserDAO(Builder builder) {
         this.userName = builder.userName;
         this.email = builder.email;
         this.isAgent = builder.isAgent;

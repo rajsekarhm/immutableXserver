@@ -18,28 +18,30 @@ public class UserDAOImpl {
     }
 
     @RequestMapping("/createUser")
-    public String createUser() {
+    public String createUser(UserDAO.Builder user) {
+        UserDAO u = new UserDAO();
+        System.out.println( u.toString());
         return "ok";
     }
 
     @PutMapping("/updateUser")
-    public String updateUser(@RequestParam String userName,
-                             @RequestParam String email,
-                             @RequestParam Boolean isAgent,
-                             @RequestParam Long phoneNumber,
-                             @RequestParam String edition,
-                             @RequestParam Boolean isAuthForBuyAndSell,
-                             @RequestParam Long governmentID) {
+    public String updateUser(UserDAO.Builder user) {
+        UserDAO u = new UserDAO();
+        System.out.println( u.toString());
         return "ok";
     }
 
     @DeleteMapping("/deleteUser")
-    public String deleteUser() {
+    public String deleteUser(Long queryId) {
+        UserDAO u = new UserDAO();
+        System.out.println( u.toString());
         return "ok";
     }
 
     @GetMapping("/getUser")
-    public String getUser() {
+    public String getUser(Long queryId) {
+         UserDAO u = new UserDAO();
+        System.out.println( u.toString());
         return "ok";
     }
 }
