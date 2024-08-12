@@ -1,7 +1,9 @@
 package com.immutable.request.accounts;
 
-import com.immutable.authentication.AuthenticationUser;
-import com.immutable.authorization.AuthorizationUser;
+//import com.immutable.authentication.AuthenticationUser;
+//import com.immutable.authorization.AuthorizationUser;
+import com.immutable.request.entities.CustodianDB_Handlers;
+import com.immutable.request.entities.Entities;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,20 +11,29 @@ public class CustodianDAOImpl {
     public  Boolean CustodianAccessibility(){
         return  true;
     }
-    @RequestMapping("/createCustodian")
-    public  void  createCustodian(@RequestBody CustodianDAO createCustodian){
 
+    @RequestMapping("/createCustodian")
+    public  String  createCustodian(@RequestBody UserDAO.Builder createCustodian){
+        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
+        custodianDB.createEntities();
+        return "ok";
     }
     @RequestMapping("/updateCustodian")
-    public  void updateCustodian(@RequestBody CustodianDAO updateCustodian){
-
+    public  String updateCustodian(@RequestBody UserDAO.Builder updateCustodian){
+        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
+        custodianDB.updateEntities();
+        return "ok";
     }
     @RequestMapping("/deleteCustodian")
-    public  void  deleteCustodian(@RequestBody CustodianDAO deleteCustodian){
-
+    public  String  deleteCustodian(@RequestBody  Long securityId){
+        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
+        custodianDB.deleteEntities();
+        return "ok";
     }
-    @RequestMapping("/getCustodian")
-    public  void getCustodian(@RequestBody CustodianDAO getUser){
-
+    @RequestMapping(value = "/getCustodian")
+    public  String getCustodian(@RequestBody Long securityId){
+        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
+        custodianDB.getEntities();
+        return "ok";
     }
 }

@@ -1,34 +1,55 @@
 package com.immutable.request.accounts;
 
 import com.immutable.authentication.AuthenticationUser;
+import com.immutable.authentication.IAuthentication;
 import com.immutable.authorization.AuthorizationUser;
 import com.immutable.authorization.IAuthorization;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.immutable.request.entities.Entities;
+import com.immutable.request.entities.UserDB_Handlers;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
+@RequestMapping("/user")
 public class UserDAOImpl {
 
-    public  Boolean UserAccessibility(){
-        return  true;
+    @GetMapping("/accessibility")
+    public Boolean userAccessibility() {
+        return true;
     }
+
     @RequestMapping("/createUser")
-    public  void  createUser(@RequestBody UserDAO createUser){
-        IAuthorization authorUser  = new AuthorizationUser();
-        AuthenticationUser authenUser = new AuthenticationUser();
-        UserDAO handleUser =  new UserDAO.Builder().build();
+    public String createUser(UserDAO.Builder user) {
+        UserDAO u = new UserDAO();
+        System.out.println(u.toString());
+        UserDB_Handlers userBD = new UserDB_Handlers();
+        userBD.createEntities();
+        return "ok";
     }
-    @RequestMapping("/updateUser")
-    public  void updateUser(@RequestBody UserDAO updateUser){
 
+    @PutMapping("/updateUser")
+    public String updateUser(UserDAO.Builder user) {
+        UserDAO u = new UserDAO();
+        System.out.println(u.toString());
+        UserDB_Handlers userBD = new UserDB_Handlers();
+        userBD.updateEntities();
+        return "ok";
     }
-    @RequestMapping("/deleteUser")
-    public  void  deleteUser(@RequestBody UserDAO deleteUser){
 
+    @DeleteMapping("/deleteUser")
+    public String deleteUser(Long queryId) {
+        UserDB_Handlers userBD = new UserDB_Handlers();
+        userBD.deleteEntities();
+        return "ok";
     }
-    @RequestMapping("/getUser")
-    public  void getUser(@RequestBody UserDAO getUser){
 
+    @GetMapping("/getUser")
+    public String getUser(Long queryId) {
+         UserDAO u = new UserDAO();
+        System.out.println( u.toString());
+        UserDB_Handlers userBD = new UserDB_Handlers();
+        userBD.getEntities();
+        return "ok";
     }
 }
