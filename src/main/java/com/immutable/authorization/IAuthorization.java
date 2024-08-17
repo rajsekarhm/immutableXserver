@@ -1,7 +1,7 @@
 package com.immutable.authorization;
 import java.util.List;
 
-public interface IAuthorization<T> {
+public interface IAuthorization {
     public Boolean isEditionUser();
-    public List<T> accessibilty();
+    public List<String> accessibilty();
 }

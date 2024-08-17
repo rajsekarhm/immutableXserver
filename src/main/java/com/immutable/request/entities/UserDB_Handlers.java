@@ -2,24 +2,25 @@ package com.immutable.request.entities;
 
 import com.immutable.request.accounts.UserDAO;
 
-public class Entities<X> implements IEntitiesHandlers<Object> {
+public class UserDB_Handlers implements IEntitiesHandlers<UserDAO> {
+
     @Override
-    public Object createEntities() {
+    public UserDAO createEntities() {
         return null;
     }
 
     @Override
-    public Object getEntities() {
+    public UserDAO getEntities() {
         return null;
     }
 
     @Override
-    public Object updateEntities() {
+    public UserDAO updateEntities() {
         return null;
     }
 
     @Override
-    public Object deleteEntities() {
+    public UserDAO deleteEntities() {
         return null;
     }
 }
