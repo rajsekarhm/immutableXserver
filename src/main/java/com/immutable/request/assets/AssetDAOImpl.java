@@ -1,23 +1,28 @@
 package com.immutable.request.assets;
 
-public class AssetDAOImpl implements IAssetsHandler{
-    @Override
-    public void createAssetType() {
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/api/v1")
+public class AssetDAOImpl implements IAssetsHandler<Asset.Builder>{
+    @Override @RequestMapping("/createAsset")
+    public String createAssetType(@RequestBody Asset.Builder asset) {
+
+        return "ok";
     }
 
-    @Override
-    public void updateAssetType() {
-
+    @Override @RequestMapping("/getAsset")
+    public String updateAssetType(@RequestBody Asset.Builder asset) {
+        return "ok";
     }
 
-    @Override
-    public void getAssetType() {
-
+    @Override @RequestMapping("/updateAsset")
+    public String getAssetType(@RequestBody long assetId) {
+        return "ok";
     }
 
-    @Override
-    public void deleteType() {
-
+    @Override @RequestMapping("/deleteAsset")
+    public String deleteType(@RequestBody long assetId) {
+        return "ok";
     }
 }

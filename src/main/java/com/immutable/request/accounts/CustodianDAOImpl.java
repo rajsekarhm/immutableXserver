@@ -6,7 +6,10 @@ import com.immutable.request.entities.CustodianDB_Handlers;
 import com.immutable.request.entities.Entities;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("api/v1/agents")
 public class CustodianDAOImpl {
     public  Boolean CustodianAccessibility(){
         return  true;
