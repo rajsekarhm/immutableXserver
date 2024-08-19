@@ -81,8 +81,4 @@ public class HbaseUtils implements IHbaseUtils {
         }
         return null;
     }
-
-    public  static void main(String [] args){
-        System.out.println("Starting ......");
-    }
 }
