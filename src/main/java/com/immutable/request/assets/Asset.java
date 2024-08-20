@@ -10,11 +10,13 @@ public class Asset {
     String blockChain;
     long assetPrice;
     String assetAddress;
+    long assetId;
     public Asset(Builder builder){
         this.assetAddress = builder.assetAddress;
         this.assetPrice=builder.assetPrice;
         this.assetType=builder.assetType;
         this.blockChain=builder.blockChain;
+        this.assetId = builder.assetId;
     }
 
     public long getAssetPrice() {
@@ -33,11 +35,16 @@ public class Asset {
         return blockChain;
     }
 
+    public long getAssetId() {
+        return assetId;
+    }
+
     public  static  class  Builder{
         String assetType;
         String blockChain;
         long assetPrice;
         String assetAddress;
+        long assetId;
 
         public Builder setAssetAddress(String assetAddress) {
             this.assetAddress = assetAddress;
@@ -56,6 +63,11 @@ public class Asset {
 
         public Builder setAssetType(String assetType) {
             this.assetType = assetType;
+            return this;
+        }
+
+        public Builder setAssetId(long assetId) {
+            this.assetId = assetId;
             return this;
         }
 
