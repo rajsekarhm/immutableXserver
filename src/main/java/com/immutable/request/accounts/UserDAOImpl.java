@@ -20,7 +20,7 @@ public class UserDAOImpl {
     }
 
     @RequestMapping("/createUser")
-    public String createUser(UserDAO.Builder user) {
+    public String createUser(@RequestBody  UserDAO.Builder user) {
         UserDAO u = new UserDAO();
         System.out.println(u.toString());
         UserDB_Handlers userBD = new UserDB_Handlers();
@@ -29,7 +29,7 @@ public class UserDAOImpl {
     }
 
     @PutMapping("/updateUser")
-    public String updateUser(UserDAO.Builder user) {
+    public String updateUser(@RequestBody UserDAO.Builder user) {
         UserDAO u = new UserDAO();
         System.out.println(u.toString());
         UserDB_Handlers userBD = new UserDB_Handlers();
@@ -38,14 +38,14 @@ public class UserDAOImpl {
     }
 
     @DeleteMapping("/deleteUser")
-    public String deleteUser(Long queryId) {
+    public String deleteUser(@RequestBody Long queryId) {
         UserDB_Handlers userBD = new UserDB_Handlers();
         userBD.deleteEntities();
         return "ok";
     }
 
     @GetMapping("/getUser")
-    public String getUser(Long queryId) {
+    public String getUser(@RequestBody Long queryId) {
          UserDAO u = new UserDAO();
         System.out.println( u.toString());
         UserDB_Handlers userBD = new UserDB_Handlers();
