@@ -3,7 +3,6 @@ import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 abstract class JedisImx implements IJedis {
     Jedis jediss;
