@@ -1,4 +1,4 @@
-package com.configuration.jedis;
+package com.dependencies.jedis;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
@@ -10,6 +10,13 @@ abstract class JedisImx implements IJedis {
         this.jediss =  new Jedis("exciting-rattler-44268.upstash.io", 6379, true);
         this.jediss.auth(token);
     }
+    public static  Jedis makeConnection(){
+        Jedis jedis = new Jedis("127.0.0.1", 6379);
+        System.out.println("Connection to server successfully");
+        System.out.println("Server is running: "+jedis.ping());
+        return jedis;
+    }
+
     @Override
     public byte[] getByByte(byte[] param) {
         return this.jediss.get(param);
