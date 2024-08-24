@@ -36,11 +36,6 @@ public class PropertiesUtils {
         return  Paths.get(args[0],Arrays.copyOfRange(args,1,args.length)).toAbsolutePath().toString();
     }
 
-    public  <T> Path  getDirName(Class<T> clazz){
-        return Paths.get(clazz.getProtectionDomain().getCodeSource().getLocation().getPath())
-                .getParent();
-    }
-
     public  String getRootDirectoryOfProject(){
         return  System.getProperty("user.dir");
     }
