@@ -1,4 +1,4 @@
-package com.configuration.kafka;
+package com.dependencies.kafka;
 
 public interface IkafkaHandlers {
 

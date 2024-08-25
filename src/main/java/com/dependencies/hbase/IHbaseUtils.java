@@ -1,4 +1,4 @@
-package com.configuration.Hbase;
+package com.dependencies.hbase;
 
 public interface IHbaseUtils {
     public  void put(String rowKey, String value, String columnFamily, String column) throws Exception;

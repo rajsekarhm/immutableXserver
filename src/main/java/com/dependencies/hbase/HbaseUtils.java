@@ -1,4 +1,4 @@
-package com.configuration.Hbase;
+package com.dependencies.hbase;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
