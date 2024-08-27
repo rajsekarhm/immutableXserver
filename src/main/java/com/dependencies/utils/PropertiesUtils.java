@@ -1,5 +1,8 @@
-package com.configuration.utils;
+package com.dependencies.utils;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Properties;
 public class PropertiesUtils {
     public Properties properties;
@@ -24,5 +27,16 @@ public class PropertiesUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String resolvePath(String... args){
+        if (args.length == 0) {
+            throw new IllegalArgumentException("At least one path argument is required");
+        }
+        return  Paths.get(args[0],Arrays.copyOfRange(args,1,args.length)).toAbsolutePath().toString();
+    }
+
+    public  String getRootDirectoryOfProject(){
+        return  System.getProperty("user.dir");
     }
 }

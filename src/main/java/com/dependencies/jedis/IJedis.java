@@ -1,5 +1,4 @@
-package com.configuration.jedis;
-import java.util.Collections;
+package com.dependencies.jedis;
 import java.util.List;
 import java.util.Map;
 
