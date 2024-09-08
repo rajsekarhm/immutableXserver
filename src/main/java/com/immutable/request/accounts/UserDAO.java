@@ -1,5 +1,6 @@
 package com.immutable.request.accounts;
 
+
 import java.util.Objects;
 
 public class UserDAO {

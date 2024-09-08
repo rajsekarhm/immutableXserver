@@ -1,7 +1,9 @@
 package com.immutable.request.entities;
 
 import com.immutable.request.accounts.CustodianDAO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CustodianDB_Handlers implements IEntitiesHandlers<CustodianDAO> {
 
     @Override

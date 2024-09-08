@@ -1,7 +1,9 @@
 package com.immutable.request.entities;
 
 import com.immutable.request.accounts.UserDAO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDB_Handlers implements IEntitiesHandlers<UserDAO> {
 
     @Override

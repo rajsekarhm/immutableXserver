@@ -2,7 +2,9 @@ package com.immutable.request.assets;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 @RequestMapping("/api/v1")
 public class AssetDAOImpl implements IAssetsHandler<Asset.Builder>{
     @Override @RequestMapping("/createAsset")
