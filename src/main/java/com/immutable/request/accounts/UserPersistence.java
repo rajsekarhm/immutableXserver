@@ -29,8 +29,9 @@ public class UserPersistence implements IOrmActions<UserDAO,Connection> {
     @Override
     public void create(Class<UserDAO> entity) throws  Exception {
         QueryBuilder<UserDAO>  _query =  new QueryBuilder<UserDAO>();
-        StringBuilder query = _query.createQueryBuilder(entity);
+        StringBuilder query = _query.createQueryBuilder(UserDAO.class,_query.getClassName(UserDAO.class));
         System.out.println(query.toString());
+        System.out.println(_query.updateQueryBuilder(UserDAO.class,_query.getClassName(UserDAO.class),"id","a","b","c").toString());
 //        Connection con= connection();
 //        con.setAutoCommit(false);
 //        query.append(entity.getSimpleName().toLowerCase()).append("(");

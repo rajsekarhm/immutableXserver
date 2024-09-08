@@ -2,9 +2,9 @@ package com.persistence.query;
 import java.lang.reflect.Field;
 
 public class QueryBuilder<T>  {
-    public  StringBuilder createQueryBuilder(Class<T> type){
+    public  StringBuilder createQueryBuilder(Class<T> type,String tableName){
         StringBuilder query = new StringBuilder("INSERT INTO ");
-        query.append(type.getSimpleName().toLowerCase()).append("(");
+        query.append(tableName).append("(");
         Field[] fields = type.getDeclaredFields();
         for(Field _filed:fields){
             query.append(_filed.getName()).append(",");
@@ -18,18 +18,30 @@ public class QueryBuilder<T>  {
         return  query;
     }
 
-    public String getQueryBuilder(Class<T> type){
-        StringBuilder query = new StringBuilder("UPDATE");
-        query.append(type.getSimpleName().toLowerCase()).append("SET");
-
-        return  "";
+    public StringBuilder updateQueryBuilder(Class<T> type, String tableName, String updateBy, String updateValue,String... updateKeys){
+        StringBuilder query = new StringBuilder("UPDATE ");
+        query.append(tableName.concat(" ")).append("SET ");
+        for (String property : updateKeys){
+            query.append(property.concat(" = ?,"));
+        }
+        query = removeSuffixString(query);
+        query.append(" WHERE ").append(updateBy.concat("=".concat(updateValue)));
+        return  query;
     }
 
-    public String getByQueryBuilder(Class<T> type){
+    public String getByQueryBuilder(Class<T> type,String getBy){
         return  "";
     }
 
     public String deleteQueryBuilder( Class<T> type){
         return  "";
+    }
+
+    public  String getClassName(Class<T> type){
+        return  type.getSimpleName().toLowerCase();
+    }
+
+    public  StringBuilder removeSuffixString(StringBuilder query) {
+        return query.deleteCharAt(query.length()-1);
     }
 }
