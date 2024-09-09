@@ -4,7 +4,11 @@ import com.persistence.database.SqlHandler;
 import com.persistence.orm.IOrmActions;
 import com.persistence.query.QueryBuilder;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class UserPersistence implements IOrmActions<UserDAO,Connection> {
     private  String host;
@@ -22,57 +26,72 @@ public class UserPersistence implements IOrmActions<UserDAO,Connection> {
     public  static  void  main(String[] args) throws Exception {
         Class<UserDAO> _class =  UserDAO.class;
         System.out.println(_class.getSimpleName());
+        UserDAO dao = new UserDAO();
         UserPersistence orm =  new UserPersistence("","","","");
-        orm.create(UserDAO.class);
+//        orm.create(dao);
+        orm.update(dao,"a","b","x","y","z");
     }
 
     @Override
-    public void create(Class<UserDAO> entity) throws  Exception {
+    public void create(UserDAO entity) throws  Exception {
+        Class<?> entityClass = entity.getClass();
         QueryBuilder<UserDAO>  _query =  new QueryBuilder<UserDAO>();
-        StringBuilder query = _query.createQueryBuilder(UserDAO.class,_query.getClassName(UserDAO.class));
-        System.out.println(query.toString());
-        System.out.println(_query.updateQueryBuilder(UserDAO.class,_query.getClassName(UserDAO.class),"id","a","b","c").toString());
-//        Connection con= connection();
-//        con.setAutoCommit(false);
-//        query.append(entity.getSimpleName().toLowerCase()).append("(");
-//        Field[] fields = entity.getDeclaredFields();
-//        for(Field _filed:fields){
-//            query.append(_filed.getName()).append(",");
-//        }
-//        query.deleteCharAt(query.length()-1).append(") VALUES (");
-//        for(Field _filed:fields){
-//            query.append("?,");
-//        }
-//        query.deleteCharAt(query.length() - `1);
-//        query.append(")");
-//        System.out.println(query.toString());
-//        PreparedStatement statement = con.prepareStatement(query.toString());
-//        try{
-//            for (int i = 0; i < fields.length; i++) {
-//                fields[i].setAccessible(true);
-//                statement.setObject(i+1,fields[i]);
-//            }
-//            statement.execute();
-//            con.commit();
-//        }catch (SQLException error){
-//            if(con != null){
-//                try {
-//                    con.rollback();
-//                }catch (SQLException err){
-//                    err.printStackTrace();
-//                }
-//            }
-//            error.printStackTrace();
-//        }
-//        finally {
-//            if(statement != null) statement.close();
-//            if(con != null) con.close();
-//        }
+        StringBuilder query = _query.createQueryBuilder(UserDAO.class,_query.getClassName(entityClass.getClass()));
+        Connection con= connection();
+        con.setAutoCommit(false);
+        Field[] fields = entityClass.getDeclaredFields();
+        PreparedStatement statement = con.prepareStatement(query.toString());
+        try{
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                statement.setObject(i+1,fields[i]);
+            }
+            statement.execute();
+            con.commit();
+        }catch (SQLException error){
+            if(con != null){
+                try {
+                    con.rollback();
+                }catch (SQLException err){
+                    err.printStackTrace();
+                }
+            }
+            error.printStackTrace();
+        }
+        finally {
+            if(statement != null) statement.close();
+            if(con != null) con.close();
+        }
     }
 
     @Override
-    public void update(Class<UserDAO> entity) throws  Exception {
-
+    public void update(UserDAO entity,String tableName,String updateBy, String updateValue,String... updateKeys) throws  Exception {
+        QueryBuilder<UserDAO>  _query =  new QueryBuilder<UserDAO>();
+        StringBuilder query = _query.updateQueryBuilder(UserDAO.class,tableName,updateBy,updateValue,updateKeys);
+        System.out.println(query.toString());
+        Connection con = connection();
+        con.setAutoCommit(false);
+        PreparedStatement statement = con.prepareStatement(query.toString());
+        try{
+            for (int i = 0; i < updateKeys.length; i++) {
+                statement.setObject(i+1,getValueByStringField(entity,updateKeys[i]));
+            }
+            statement.execute();
+            con.commit();
+        }catch (SQLException error){
+            if(con != null){
+                try {
+                    con.rollback();
+                }catch (SQLException err){
+                    err.printStackTrace();
+                }
+            }
+            error.printStackTrace();
+        }
+        finally {
+            if(statement != null) statement.close();
+            if(con != null) con.close();
+        }
     }
 
     @Override
@@ -90,5 +109,12 @@ public class UserPersistence implements IOrmActions<UserDAO,Connection> {
         SqlHandler dbHandler = new SqlHandler();
         dbHandler.setDBUtilsProperty(this.host,this.username,this.password,this.database);
         return  dbHandler.getConnection();
+    }
+
+    public Object getValueByStringField(Object _object,String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        Class<?> clazz = _object.getClass();
+        Field field = clazz.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return field.get(_object);
     }
 }

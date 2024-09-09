@@ -37,7 +37,7 @@ public class QueryBuilder<T>  {
         return  "";
     }
 
-    public  String getClassName(Class<T> type){
+    public  String getClassName(Class<?> type){
         return  type.getSimpleName().toLowerCase();
     }
 
