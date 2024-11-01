@@ -28,7 +28,7 @@ public class UserDAOImpl {
     @RequestMapping("/createUser")
     public String createUser(@RequestBody  UserDAO.Builder user) throws IOException {
         IJedis jedis = new JedisImx();
-        jedis.setByString(user.governmentID.toString(), Formatter.toJSON(user));
+        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
         return "ok";
     }
 
@@ -39,24 +39,24 @@ public class UserDAOImpl {
 //        UserDB_Handlers userBD = new UserDB_Handlers();
 //        userBD.updateEntities();
         IJedis jedis = new JedisImx();
-        jedis.setByString(user.governmentID.toString(), Formatter.toJSON(user));
+        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
         return "ok";
     }
 
     @DeleteMapping("/deleteUser")
-    public String deleteUser(@RequestBody Long queryId) {
+    public String deleteUser(@RequestParam Long governmentId) {
         UserDB_Handlers userBD = new UserDB_Handlers();
         userBD.deleteEntities();
         return "ok";
     }
 
     @GetMapping("/getUser")
-    public String getUser(@RequestParam String queryId) {
+    public String getUser(@RequestParam long governmentId) {
 //        UserDAO u = new UserDAO();
 //        System.out.println( u.toString());
 //        UserDB_Handlers userBD = new UserDB_Handlers();
 //        userBD.getEntities(queryId);
         IJedis jedis = new JedisImx();
-        return jedis.getByString(queryId);
+        return jedis.getByString(Long.toString(governmentId));
     }
 }

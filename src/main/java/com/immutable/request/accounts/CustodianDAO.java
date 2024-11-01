@@ -17,13 +17,6 @@ public class CustodianDAO extends UserDAO {
         return  securityId;
     }
     public static class Builder extends  UserDAO.Builder {
-         String userName;
-         String email;
-         Boolean isAgent;
-         Long phoneNumber;
-         String edition;
-         Boolean isAuthForBuyAndSell;
-         Long governmentID;
          long orgId;
          long securityId;
 
@@ -62,7 +55,7 @@ public class CustodianDAO extends UserDAO {
             return this;
         }
 
-        public  Builder setorgId(long _orgId){
+        public  Builder setOrgId(long _orgId){
             this.orgId = _orgId;
             return  this;
         }
