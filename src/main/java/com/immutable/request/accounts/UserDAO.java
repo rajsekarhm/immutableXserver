@@ -53,13 +53,13 @@ public class UserDAO {
     }
 
     public static class Builder {
-        private String userName;
-        private String email;
-        private Boolean isAgent;
-        private Long phoneNumber;
-        private String edition;
-        private Boolean isAuthForBuyAndSell;
-        private Long governmentID;
+         String userName;
+         String email;
+         Boolean isAgent;
+         Long phoneNumber;
+         String edition;
+         Boolean isAuthForBuyAndSell;
+         Long governmentID;
 
         public Builder setUserName(String userName) {
             this.userName = userName;

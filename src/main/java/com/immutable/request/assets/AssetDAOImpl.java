@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class AssetDAOImpl implements IAssetsHandler<Asset.Builder>{
+public class AssetDAOImpl implements IAssetsHandler<AssetDAO.Builder>{
     @Override @RequestMapping("/createAsset")
-    public String createAssetType(@RequestBody Asset.Builder asset) {
+    public String createAssetType(@RequestBody AssetDAO.Builder asset) {
 
         return "ok";
     }
 
     @Override @RequestMapping("/getAsset")
-    public String updateAssetType(@RequestBody Asset.Builder asset) {
+    public String updateAssetType(@RequestBody AssetDAO.Builder asset) {
         return "ok";
     }
 

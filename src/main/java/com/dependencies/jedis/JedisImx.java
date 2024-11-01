@@ -1,20 +1,24 @@
 package com.dependencies.jedis;
 import redis.clients.jedis.Jedis;
-
 import java.util.List;
 import java.util.Map;
 
-abstract class JedisImx implements IJedis {
-    Jedis jediss;
-    public  JedisImx(String token){
-        this.jediss =  new Jedis("exciting-rattler-44268.upstash.io", 6379, true);
-        this.jediss.auth(token);
+ public class JedisImx implements IJedis {
+    static  Jedis jediss;
+    public JedisImx(){
+        makeConnection();
     }
-    public static  Jedis makeConnection(){
-        Jedis jedis = new Jedis("127.0.0.1", 6379);
-        System.out.println("Connection to server successfully");
-        System.out.println("Server is running: "+jedis.ping());
-        return jedis;
+//    public  JedisImx(String token){
+//        this.jediss =  new Jedis("exciting-rattler-44268.upstash.io", 6379, true);
+//        this.jediss.auth(token);
+//    }
+    public static Jedis makeConnection(){
+        if(jediss == null){
+            jediss = new Jedis("127.0.0.1", 6379);
+            System.out.println("Connection to server successfully");
+            System.out.println("Server is running: "+jediss.ping());
+        }
+        return jediss;
     }
 
     @Override
@@ -42,7 +46,18 @@ abstract class JedisImx implements IJedis {
         return  this.jediss.set(key,vale);
     }
 
-    @Override
+
+     @Override
+     public long setRangeByString(String key, long offset, String value) {
+         return this.jediss.setrange(key,offset,value);
+     }
+
+     @Override
+     public Map<String, String> hSetAll(String key) {
+         return Map.of();
+     }
+
+     @Override
     public List<String> mGet(String... key) {
         return this.jediss.mget(key);
     }
@@ -62,7 +77,7 @@ abstract class JedisImx implements IJedis {
         return this.jediss.set(key,value);
     }
 
-    @Override
+     @Override
     public long setRangeByByte(byte[] key, long offset, byte[] value) {
         return this.jediss.setrange(key,offset,value);
     }

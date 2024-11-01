@@ -1,17 +1,14 @@
 package com.immutable.request.assets;
 
-import com.immutable.request.accounts.UserDAO;
-
-import java.util.Map;
 import java.util.Objects;
 
-public class Asset {
+public class AssetDAO {
     String assetType;
     String blockChain;
     long assetPrice;
     String assetAddress;
     long assetId;
-    public Asset(Builder builder){
+    public AssetDAO(Builder builder){
         this.assetAddress = builder.assetAddress;
         this.assetPrice=builder.assetPrice;
         this.assetType=builder.assetType;
@@ -71,8 +68,8 @@ public class Asset {
             return this;
         }
 
-        public Asset build(){
-            return  new Asset(this);
+        public AssetDAO build(){
+            return  new AssetDAO(this);
         }
     }
     public String toString() {
@@ -93,7 +90,7 @@ public class Asset {
         if (obj == null || getClass() != obj.getClass()) {
             return false; // Null or different class
         }
-        Asset other = (Asset) obj;
+        AssetDAO other = (AssetDAO) obj;
         return assetPrice == other.assetPrice &&
                 Objects.equals(assetType, other.assetType) &&
                 Objects.equals(blockChain, other.blockChain) &&

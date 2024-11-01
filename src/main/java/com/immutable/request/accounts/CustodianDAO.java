@@ -17,15 +17,15 @@ public class CustodianDAO extends UserDAO {
         return  securityId;
     }
     public static class Builder extends  UserDAO.Builder {
-        private String userName;
-        private String email;
-        private Boolean isAgent;
-        private Long phoneNumber;
-        private String edition;
-        private Boolean isAuthForBuyAndSell;
-        private Long governmentID;
-        private long orgId;
-        private long securityId;
+         String userName;
+         String email;
+         Boolean isAgent;
+         Long phoneNumber;
+         String edition;
+         Boolean isAuthForBuyAndSell;
+         Long governmentID;
+         long orgId;
+         long securityId;
 
         public Builder setUserName(String userName) {
             this.userName = userName;
