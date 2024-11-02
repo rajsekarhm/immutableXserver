@@ -17,21 +17,23 @@ import java.io.IOException;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/user")@CrossOrigin
 public class UserDAOImpl {
 
+    @CrossOrigin
     @GetMapping("/accessibility")
     public Boolean userAccessibility() {
         return true;
     }
-
-    @RequestMapping("/createUser")
+    @CrossOrigin
+    @PostMapping("/createUser")
     public String createUser(@RequestBody  UserDAO.Builder user) throws IOException {
         IJedis jedis = new JedisImx();
         jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
-        return "ok";
+        return jedis.getByString(Long.toString(user.governmentID));
     }
 
+    @CrossOrigin
     @PutMapping("/updateUser")
     public String updateUser(@RequestBody UserDAO.Builder user) {
 //        UserDAO u = new UserDAO();
@@ -43,6 +45,7 @@ public class UserDAOImpl {
         return "ok";
     }
 
+    @CrossOrigin
     @DeleteMapping("/deleteUser")
     public String deleteUser(@RequestParam Long governmentId) {
         UserDB_Handlers userBD = new UserDB_Handlers();
@@ -50,6 +53,7 @@ public class UserDAOImpl {
         return "ok";
     }
 
+    @CrossOrigin
     @GetMapping("/getUser")
     public String getUser(@RequestParam long governmentId) {
 //        UserDAO u = new UserDAO();
