@@ -8,19 +8,16 @@ import com.google.gson.Gson;
 import com.immutable.request.entities.CustodianDB_Handlers;
 import com.immutable.request.entities.Entities;
 import com.immutable.request.utils.Formatter;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/agents")
+@RequestMapping("api/v1/agents")@CrossOrigin
 public class CustodianDAOImpl {
     public  Boolean CustodianAccessibility(){
         return  true;
     }
 
-    @RequestMapping("/createCustodian")
+    @PostMapping("/createCustodian")@CrossOrigin
     public  String  createCustodian(@RequestBody CustodianDAO.Builder createCustodian){
         IJedis redis = new JedisImx();
         redis.setByString(Long.toString(createCustodian.governmentID), Formatter.toJSON(createCustodian));
@@ -28,7 +25,7 @@ public class CustodianDAOImpl {
 //        custodianDB.createEntities();
         return "ok";
     }
-    @RequestMapping("/updateCustodian")
+    @PutMapping("/updateCustodian")@CrossOrigin
     public  String updateCustodian(@RequestBody CustodianDAO.Builder updateCustodian){
           IJedis redis = new JedisImx();
           redis.setByString(Long.toString(updateCustodian.governmentID), Formatter.toJSON(updateCustodian));
@@ -36,13 +33,13 @@ public class CustodianDAOImpl {
 //        custodianDB.updateEntities();
         return "ok";
     }
-    @RequestMapping("/deleteCustodian")
+    @DeleteMapping("/deleteCustodian")@CrossOrigin
     public  String  deleteCustodian(@RequestParam  long governmentId){
 //        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
 //        custodianDB.deleteEntities();
         return "ok";
     }
-    @RequestMapping(value = "/getCustodian")
+    @GetMapping(value = "/getCustodian")@CrossOrigin
     public  String getCustodian(@RequestParam long governmentId){
 //        CustodianDB_Handlers custodianDB = new CustodianDB_Handlers();
 //        custodianDB.getEntities();
