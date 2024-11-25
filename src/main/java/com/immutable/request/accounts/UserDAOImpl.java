@@ -27,19 +27,15 @@ public class UserDAOImpl {
     }
     @CrossOrigin
     @PostMapping("/createUser")
-    public String createUser(@RequestBody  UserDAO.Builder user) throws IOException {
+    public String createUser(@RequestBody  UserDAO user) throws IOException {
         IJedis jedis = new JedisImx();
-        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
-        return jedis.getByString(Long.toString(user.governmentID));
+        String userJson = new Gson().toJson(user);
+        jedis.setByString(user.getGovernmentID().toString(), userJson);
+        return "ok";
     }
 
-    @CrossOrigin
-    @PutMapping("/updateUser")
+    @PutMapping("/updateUser") @CrossOrigin
     public String updateUser(@RequestBody UserDAO.Builder user) {
-//        UserDAO u = new UserDAO();
-//        System.out.println(u.toString());
-//        UserDB_Handlers userBD = new UserDB_Handlers();
-//        userBD.updateEntities();
         IJedis jedis = new JedisImx();
         jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
         return "ok";
@@ -55,12 +51,8 @@ public class UserDAOImpl {
 
     @CrossOrigin
     @GetMapping("/getUser")
-    public String getUser(@RequestParam long governmentId) {
-//        UserDAO u = new UserDAO();
-//        System.out.println( u.toString());
-//        UserDB_Handlers userBD = new UserDB_Handlers();
-//        userBD.getEntities(queryId);
+    public Object getUser(@RequestParam String governmentId) {
         IJedis jedis = new JedisImx();
-        return jedis.getByString(Long.toString(governmentId));
+        return Formatter.toJSON(jedis.getByString(governmentId));
     }
 }

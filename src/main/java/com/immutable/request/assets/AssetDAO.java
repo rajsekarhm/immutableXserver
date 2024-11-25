@@ -1,99 +1,117 @@
 package com.immutable.request.assets;
 
-import java.util.Objects;
-
 public class AssetDAO {
-    String assetType;
-    String blockChain;
-    long assetPrice;
+    String tokenId;
+    String symbol;
+    String tokenURI;
+    long value;
     String assetAddress;
-    long assetId;
-    public AssetDAO(Builder builder){
-        this.assetAddress = builder.assetAddress;
-        this.assetPrice=builder.assetPrice;
-        this.assetType=builder.assetType;
-        this.blockChain=builder.blockChain;
-        this.assetId = builder.assetId;
+    String ownerAddress;
+    Boolean isValidated;
+
+    public  AssetDAO(String _tokenId,
+    String _symbol,
+    String _tokenURI,
+    long _value,
+    String _assetAddress,
+    String _ownerAddress,
+    Boolean _isValidated){
+        this.tokenId = _tokenId;
+        this.symbol =_symbol;
+        this.tokenURI = _tokenURI;
+        this.value = _value;
+        this.assetAddress =_assetAddress;
+        this.ownerAddress = _ownerAddress;
+        this.isValidated  = _isValidated;
+
+    }
+    public AssetDAO(AssetDAO.Builder asset){
+        this.assetAddress = asset.assetAddress;
+        this.symbol = asset.symbol;
+        this.tokenURI = asset.tokenURI;
+        this.tokenId = asset.tokenId;
+        this.ownerAddress = asset.ownerAddress;
+        this.value = asset.value;
     }
 
-    public long getAssetPrice() {
-        return assetPrice;
+    public Boolean getValidated() {
+        return isValidated;
+    }
+
+    public String getOwnerAddress() {
+        return ownerAddress;
     }
 
     public String getAssetAddress() {
         return assetAddress;
     }
 
-    public String getAssetType() {
-        return assetType;
+    public long getValue() {
+        return value;
     }
 
-    public String getBlockChain() {
-        return blockChain;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public long getAssetId() {
-        return assetId;
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public String getTokenURI() {
+        return tokenURI;
     }
 
     public  static  class  Builder{
-        String assetType;
-        String blockChain;
-        long assetPrice;
+        String tokenId;
+        String symbol;
+        String tokenURI;
+        long value;
         String assetAddress;
-        long assetId;
+        String ownerAddress;
+        Boolean isValidated;
 
         public Builder setAssetAddress(String assetAddress) {
             this.assetAddress = assetAddress;
             return this;
         }
 
-        public Builder setAssetPrice(long assetPrice) {
-            this.assetPrice = assetPrice;
+        public Builder setOwnerAddress(String ownerAddress) {
+            this.ownerAddress = ownerAddress;
             return this;
         }
 
-        public Builder setBlockChain(String blockChain) {
-            this.blockChain = blockChain;
+        public Builder setSymbol(String symbol) {
+            this.symbol = symbol;
             return this;
         }
 
-        public Builder setAssetType(String assetType) {
-            this.assetType = assetType;
+        public Builder setTokenId(String tokenId) {
+            this.tokenId = tokenId;
             return this;
         }
 
-        public Builder setAssetId(long assetId) {
-            this.assetId = assetId;
+        public Builder setTokenURI(String tokenURI) {
+            this.tokenURI = tokenURI;
             return this;
         }
 
-        public AssetDAO build(){
+        public Builder setValue(long value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder setValidated(Boolean validated) {
+            isValidated = validated;
+            return this;
+        }
+
+        public AssetDAO _build(){
             return  new AssetDAO(this);
         }
-    }
-    public String toString() {
-        return "Asset{" +
-                "assetType='" + assetType + '\'' +
-                ", blockChain='" + blockChain + '\'' +
-                ", assetPrice=" + assetPrice +
-                ", assetAddress='" + assetAddress + '\'' +
-                '}';
-    }
-    public int hashCode() {
-        return Objects.hash(assetType, blockChain, assetPrice, assetAddress);
-    }
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true; // Same reference
+
+        public  AssetDAO build(){
+            return  new AssetDAO(this.tokenId,this.symbol,this.tokenURI,this.value,this.assetAddress,this.ownerAddress,this.isValidated);
         }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false; // Null or different class
-        }
-        AssetDAO other = (AssetDAO) obj;
-        return assetPrice == other.assetPrice &&
-                Objects.equals(assetType, other.assetType) &&
-                Objects.equals(blockChain, other.blockChain) &&
-                Objects.equals(assetAddress, other.assetAddress);
     }
 }
