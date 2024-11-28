@@ -4,24 +4,24 @@ import java.util.Objects;
 
 public class CustodianDAO extends UserDAO {
     private long orgId;
-    private long securityId;
+    private long agentId;
     private  CustodianDAO(CustodianDAO.Builder builder){
         super(builder);
         this.orgId = builder.orgId;
-        this.securityId = builder.securityId;
+        this.agentId = builder.agentId;
     }
     public  long getOrgId(){
         return  orgId;
     }
-    public  long getSecurityId(){
-        return  securityId;
+    public  long getagentId(){
+        return  agentId;
     }
     public static class Builder extends  UserDAO.Builder {
          long orgId;
-         long securityId;
+         long agentId;
 
-        public Builder setUserName(String userName) {
-            this.userName = userName;
+        public Builder setUserName(String firstName) {
+            this.firstName = firstName;
             return this;
         }
 
@@ -35,7 +35,7 @@ public class CustodianDAO extends UserDAO {
             return this;
         }
 
-        public Builder setPhoneNumber(Long phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
@@ -60,8 +60,8 @@ public class CustodianDAO extends UserDAO {
             return  this;
         }
 
-        public Builder setSecurityId(long _securityId){
-            this.securityId = _securityId;
+        public Builder setagentId(long _agentId){
+            this.agentId = _agentId;
             return this;
         }
         public  CustodianDAO build(){
@@ -72,7 +72,7 @@ public class CustodianDAO extends UserDAO {
     @Override
     public String toString() {
         return "CustodianDAO{" +
-                "userName='" + getUserName() + '\'' +
+                "userName='" + getFirstName() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", isAgent=" + getIsAgent() +
                 ", phoneNumber=" + getPhoneNumber() +
@@ -80,13 +80,13 @@ public class CustodianDAO extends UserDAO {
                 ", isAuthForBuyAndSell=" + getIsAuthForBuyAndSell() +
                 ", governmentID=" + getGovernmentID() +
                 ", orgId=" + orgId +
-                ", securityId=" + securityId +
+                ", agentId=" + agentId +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orgId, securityId);
+        return Objects.hash(super.hashCode(), orgId, agentId);
     }
 
     @Override
@@ -95,6 +95,6 @@ public class CustodianDAO extends UserDAO {
         if (!(o instanceof CustodianDAO)) return false;
         if (!super.equals(o)) return false;
         CustodianDAO that = (CustodianDAO) o;
-        return orgId == that.orgId && securityId == that.securityId;
+        return orgId == that.orgId && agentId == that.agentId;
     }
 }
