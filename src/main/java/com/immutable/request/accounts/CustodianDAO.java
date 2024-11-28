@@ -35,7 +35,7 @@ public class CustodianDAO extends UserDAO {
             return this;
         }
 
-        public Builder setPhoneNumber(Long phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }

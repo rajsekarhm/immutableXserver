@@ -10,7 +10,7 @@ public class UserDAO {
     public String firstName;
     public String lastName;
     public String email;
-    public Long phoneNumber;
+    public String phoneNumber;
     public String password;
     public String location;
     public Long governmentID;
@@ -26,7 +26,7 @@ public class UserDAO {
             @JsonProperty("firstName") String firstName,
             @JsonProperty("lastName") String lastName,
             @JsonProperty("email") String email,
-            @JsonProperty("phoneNumber") Long phoneNumber,
+            @JsonProperty("phoneNumber") String phoneNumber,
             @JsonProperty("password") String password,
             @JsonProperty("location") String location,
             @JsonProperty("governmentID") Long governmentID,
@@ -86,7 +86,7 @@ public class UserDAO {
         return email;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -167,7 +167,7 @@ public class UserDAO {
          String firstName;
          String lastName;
          String email;
-         Long phoneNumber;
+        String phoneNumber;
          String password;
          String location;
          Long governmentID;
@@ -194,7 +194,7 @@ public class UserDAO {
             return this;
         }
 
-        public Builder setPhoneNumber(Long phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }

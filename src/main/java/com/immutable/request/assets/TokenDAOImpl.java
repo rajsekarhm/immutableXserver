@@ -1,23 +1,42 @@
 package com.immutable.request.assets;
 
-public class TokenDAOImpl implements  IAssetsHandler<Object>{
+import com.dependencies.jedis.IJedis;
+import com.dependencies.jedis.JedisImx;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/token") @CrossOrigin
+public class TokenDAOImpl implements  IAssetsHandler<TokenDAO>{
+    private final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create();
     @Override
-    public String createAssetType(Object asset) {
+    @CrossOrigin @PostMapping("/createToken")
+    public Object create(@RequestBody TokenDAO token) {
+        IJedis redis = new JedisImx();
+        redis.setByString(token.getTokenId(),gson.toJson(token));
+        return token;
+    }
+
+    @Override
+    @CrossOrigin @PutMapping("/updateToken")
+    public Object update(@RequestBody TokenDAO asset) {
         return "";
     }
 
     @Override
-    public String updateAssetType(Object asset) {
-        return "";
+    @CrossOrigin @GetMapping("/getToken")
+    public Object get(@RequestParam String tokenId) {
+        IJedis redis = new JedisImx();
+        return  redis.getByString(tokenId);
     }
 
     @Override
-    public String getAssetType(String Id) {
-        return "";
-    }
-
-    @Override
-    public String deleteType(long Id) {
+    @CrossOrigin @DeleteMapping("/deleteToken")
+    public Object delete(@RequestParam long Id) {
         return "";
     }
 }
