@@ -17,12 +17,13 @@ public class AssetDAOImpl implements IAssetsHandler<AssetDAO>{
     @Override @PostMapping("/createAsset")@CrossOrigin
     public Object create(@RequestBody AssetDAO asset) {
         IJedis redis = new JedisImx();
-        redis.setByString(asset.getTokenId(),gson.toJson(asset));
+        redis.setByString(asset.getAssetId(),gson.toJson(asset));
         return asset;
     }
 
     @Override @PutMapping("/updateAsset")@CrossOrigin
-    public String update(@RequestBody AssetDAO asset) {return "ok";
+    public String update(@RequestBody AssetDAO asset) {
+        return "ok";
     }
 
     @Override @GetMapping("/getAsset")@CrossOrigin

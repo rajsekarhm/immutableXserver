@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AssetDAO {
     private String associatedUser;
-    private String tokenId;
+    private String assetId;
     private String symbol;
-    private String tokenURI;
+    private String assetURI;
     private long value;
     private String assetAddress;
     private boolean isValidated;
@@ -18,9 +18,9 @@ public class AssetDAO {
 
     @JsonCreator
     public AssetDAO(
-            @JsonProperty("tokenId") String tokenId,
+            @JsonProperty("assetId") String assetId,
             @JsonProperty("symbol") String symbol,
-            @JsonProperty("tokenURI") String tokenURI,
+            @JsonProperty("assetURI") String assetURI,
             @JsonProperty("value") long value,
             @JsonProperty("assetAddress") String assetAddress,
             @JsonProperty("isValidated") boolean isValidated,
@@ -28,9 +28,9 @@ public class AssetDAO {
             @JsonProperty("isForSale") boolean isForSale,
             @JsonProperty("isFungible") boolean isFungible
     ) {
-        this.tokenId = tokenId;
+        this.assetId = assetId;
         this.symbol = symbol;
-        this.tokenURI = tokenURI;
+        this.assetURI = assetURI;
         this.value = value;
         this.assetAddress = assetAddress;
         this.isValidated = isValidated;
@@ -40,9 +40,9 @@ public class AssetDAO {
     }
 
     public AssetDAO(AssetDAO.Builder asset){
-        this.tokenId = asset.tokenId;
+        this.assetId = asset.assetId;
         this.symbol = asset.symbol;
-        this.tokenURI = asset.tokenURI;
+        this.assetURI = asset.assetURI;
         this.value = asset.value;
         this.assetAddress = asset.assetAddress;
         this.isValidated = asset.isValidated;
@@ -51,15 +51,15 @@ public class AssetDAO {
         this.isFungible = asset.isFungible;
     }
 
-    public String getTokenId() {
-        return tokenId;
+    public String getAssetId() {
+        return assetId;
     }
 
     public  static  class  Builder{
         String associatedUser;
-        String tokenId;
+        String assetId;
         String symbol;
-        String tokenURI;
+        String assetURI;
         long value;
         String assetAddress;
         boolean isValidated;
@@ -91,13 +91,13 @@ public class AssetDAO {
             return this;
         }
 
-        public Builder setTokenId(String tokenId) {
-            this.tokenId = tokenId;
+        public Builder setAssetId(String assetId) {
+            this.assetId = assetId;
             return this;
         }
 
-        public Builder setTokenURI(String tokenURI) {
-            this.tokenURI = tokenURI;
+        public Builder setAssetURI(String assetURI) {
+            this.assetURI = assetURI;
             return this;
         }
 
@@ -116,7 +116,7 @@ public class AssetDAO {
         }
 
         public  AssetDAO build(){
-            return  new AssetDAO(this.tokenId,this.symbol,this.tokenURI,this.value,this.assetAddress,this.isValidated,this.associatedUser,this.isForSale,this.isFungible);
+            return  new AssetDAO(this.assetId,this.symbol,this.assetURI,this.value,this.assetAddress,this.isValidated,this.associatedUser,this.isForSale,this.isFungible);
         }
     }
 }
