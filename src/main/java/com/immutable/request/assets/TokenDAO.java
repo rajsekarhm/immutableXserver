@@ -6,7 +6,7 @@ import org.apache.kafka.common.protocol.types.Field;
 
 public class TokenDAO {
     private String walletAddress;
-    private String numberOfToken;
+    private String numberOfTokens;
     private String symbol;
     private String tokenName;
     private String tokenId;
@@ -14,11 +14,11 @@ public class TokenDAO {
     public TokenDAO(){}
     @JsonCreator
     public TokenDAO(@JsonProperty("walletAddress") String _walletAddress,
-                    @JsonProperty("numberOfToken") String _numberOfToken,
+                    @JsonProperty("numberOfTokens") String _numberOfToken,
                     @JsonProperty("symbol") String _symbol,
                     @JsonProperty("tokenName") String _tokenName,
                     @JsonProperty("tokenId") String _tokenId){
-        this.numberOfToken= _numberOfToken;
+        this.numberOfTokens= _numberOfToken;
         this.symbol = _symbol;
         this.walletAddress = _walletAddress;
         this.tokenName = _tokenName;
@@ -26,7 +26,7 @@ public class TokenDAO {
     }
     public TokenDAO(Builder builder) {
         this.walletAddress = builder.walletAddress;
-        this.numberOfToken = builder.numberOfToken;
+        this.numberOfTokens = builder.numberOfTokens;
         this.symbol = builder.symbol;
         this.tokenName = builder.tokenName;
         this.tokenId = builder.tokenId;
@@ -40,8 +40,8 @@ public class TokenDAO {
         return walletAddress;
     }
 
-    public String getNumberOfToken() {
-        return numberOfToken;
+    public String getNumberOfTokens() {
+        return numberOfTokens;
     }
 
     public String getSymbol() {
@@ -54,7 +54,7 @@ public class TokenDAO {
 
     public static class Builder {
         private String walletAddress;
-        private String numberOfToken;
+        private String numberOfTokens;
         private String symbol;
         private String tokenName;
         private String tokenId;
@@ -71,8 +71,8 @@ public class TokenDAO {
             return this;
         }
 
-        public Builder setNumberOfToken(String numberOfToken) {
-            this.numberOfToken = numberOfToken;
+        public Builder setNumberOfTokens(String numberOfToken) {
+            this.numberOfTokens = numberOfToken;
             return this;
         }
 

@@ -4,6 +4,7 @@ import com.dependencies.jedis.IJedis;
 import com.dependencies.jedis.JedisImx;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.immutable.request.utils.Formatter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,7 +32,7 @@ public class TokenDAOImpl implements  IAssetsHandler<TokenDAO>{
     @CrossOrigin @GetMapping("/getToken")
     public Object get(@RequestParam String tokenId) {
         IJedis redis = new JedisImx();
-        return  redis.getByString(tokenId);
+        return Formatter.toJSON(redis.getByString(tokenId));
     }
 
     @Override
