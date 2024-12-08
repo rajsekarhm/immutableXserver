@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.kafka.common.protocol.types.Field;
 
 public class TokenDAO {
-    private String walletAddress;
-    private String numberOfTokens;
-    private String symbol;
-    private String tokenName;
-    private String tokenId;
+     String walletAddress;
+     String numberOfTokens;
+     String symbol;
+     String tokenName;
+     String tokenId;
 
     public TokenDAO(){}
     @JsonCreator
@@ -53,11 +53,11 @@ public class TokenDAO {
     }
 
     public static class Builder {
-        private String walletAddress;
-        private String numberOfTokens;
-        private String symbol;
-        private String tokenName;
-        private String tokenId;
+         String walletAddress;
+         String numberOfTokens;
+         String symbol;
+         String tokenName;
+         String tokenId;
 
         public Builder() {}
 

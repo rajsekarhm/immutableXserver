@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AssetDAO {
-    private String associatedUser;
-    private String assetId;
-    private String symbol;
-    private String assetURI;
-    private long value;
-    private String assetAddress;
-    private boolean isValidated;
-    private boolean isForSale;
-    private boolean isFungible;
+     String associatedUser;
+     String assetId;
+     String symbol;
+     String assetURI;
+     long value;
+     String assetAddress;
+     boolean isValidated;
+     boolean isForSale;
+     boolean isFungible;
 
     public AssetDAO() {}
 
