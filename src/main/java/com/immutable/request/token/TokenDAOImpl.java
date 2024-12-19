@@ -1,15 +1,16 @@
-package com.immutable.request.assets;
+package com.immutable.request.token;
 
 import com.dependencies.jedis.IJedis;
 import com.dependencies.jedis.JedisImx;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.immutable.request.assets.IAssetsHandler;
 import com.immutable.request.utils.Formatter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/token") @CrossOrigin
-public class TokenDAOImpl implements  IAssetsHandler<TokenDAO>{
+public class TokenDAOImpl implements IAssetsHandler<TokenDAO> {
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .serializeNulls()
