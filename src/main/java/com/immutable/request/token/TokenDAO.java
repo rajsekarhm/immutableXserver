@@ -2,7 +2,9 @@ package com.immutable.request.token;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class TokenDAO {
      String walletAddress;
      String numberOfTokens;

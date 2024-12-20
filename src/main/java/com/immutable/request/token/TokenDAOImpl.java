@@ -15,30 +15,32 @@ public class TokenDAOImpl implements IAssetsHandler<TokenDAO> {
             .setPrettyPrinting()
             .serializeNulls()
             .create();
+    private  IJedis redis = new JedisImx();
     @Override
     @CrossOrigin @PostMapping("/createToken")
-    public Object create(@RequestBody TokenDAO token) {
-        IJedis redis = new JedisImx();
+    public TokenDAO create(@RequestBody TokenDAO token) {
         redis.setByString(token.getTokenId(),gson.toJson(token));
         return token;
     }
 
+
     @Override
     @CrossOrigin @PutMapping("/updateToken")
-    public Object update(@RequestBody TokenDAO asset) {
-        return "";
+    public TokenDAO update(@RequestParam String tokenId,@RequestBody TokenDAO token) {
+        redis.setByString(tokenId,Formatter.toJSON(token));
+        return Formatter.toObject(redis.getByString(tokenId),TokenDAO.class);
     }
 
     @Override
     @CrossOrigin @GetMapping("/getToken")
-    public Object get(@RequestParam String tokenId) {
-        IJedis redis = new JedisImx();
-        return Formatter.toJSON(redis.getByString(tokenId));
+    public TokenDAO get(@RequestParam String tokenId) {
+        return Formatter.toObject(Formatter.toJSON(redis.getByString(tokenId)),TokenDAO.class);
     }
 
     @Override
     @CrossOrigin @DeleteMapping("/deleteToken")
-    public Object delete(@RequestParam long Id) {
-        return "";
+    public Object delete(@RequestParam  String tokenId) {
+        redis.setByString(tokenId,null);
+        return null;
     }
 }

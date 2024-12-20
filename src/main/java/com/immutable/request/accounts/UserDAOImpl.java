@@ -4,6 +4,7 @@ import com.dependencies.jedis.IJedis;
 import com.dependencies.jedis.JedisImx;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.immutable.request.entities.UserDB_Handlers;
 import com.immutable.request.utils.Formatter;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/v1/user")@CrossOrigin
 public class UserDAOImpl {
-
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+    private  IJedis redis = new JedisImx();
     @CrossOrigin
     @GetMapping("/accessibility")
     public Boolean userAccessibility() {
@@ -22,41 +24,35 @@ public class UserDAOImpl {
 
     @CrossOrigin
     @PostMapping("/createUser")
-    public Object createUser(@RequestBody  UserDAO user) throws IOException {
-        IJedis jedis = new JedisImx();
-        String userJson = new Gson().toJson(user);
-        jedis.setByString(user.getGovernmentID().toString(), userJson);
-        return user;
+    public UserDAO createUser(@RequestBody  UserDAO user) throws IOException {
+        redis.setByString(user.getGovernmentID().toString(), Formatter.toJSON(user));
+        return Formatter.toObject(redis.getByString(user.getGovernmentID().toString()),UserDAO.class);
     }
 
     @PutMapping("/updateUser") @CrossOrigin
-    public String updateUser(@RequestBody UserDAO user) {
-        IJedis jedis = new JedisImx();
-        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
-        return "ok";
+    public UserDAO updateUser(@RequestBody UserDAO user) {
+        redis.setByString(user.governmentID.toString(), Formatter.toJSON(user));
+        return Formatter.toObject(redis.getByString(user.getGovernmentID().toString()),UserDAO.class);
     }
 
     @CrossOrigin
     @DeleteMapping("/deleteUser")
-    public String deleteUser(@RequestParam Long governmentId) {
-        UserDB_Handlers userBD = new UserDB_Handlers();
-        userBD.deleteEntities();
-        return "ok";
+    public Object deleteUser(@RequestParam String governmentId) {
+        redis.setByString(governmentId,null);
+        return null;
     }
 
     @CrossOrigin
     @GetMapping("/getUser")
-    public Object getUser(@RequestParam String governmentId) {
-        IJedis jedis = new JedisImx();
-        return Formatter.toJSON(jedis.getByString(governmentId));
+    public UserDAO getUser(@RequestParam String governmentId) {
+        return Formatter.toObject(redis.getByString(governmentId),UserDAO.class);
     }
 
     @CrossOrigin
     @PutMapping("/addAsset")
-    public Object addNewAsset(@RequestParam  String governmentId,  @RequestBody Map<String,String> asset) throws IOException {
-        // handle associated user infos
-        IJedis jedis = new JedisImx();
-        String userDetails = jedis.getByString(governmentId);
+    public UserDAO addNewAsset(@RequestParam  String governmentId,  @RequestBody Map<String,String> asset) throws IOException {
+        // handle associated user info
+        String userDetails = redis.getByString(governmentId);
         if(userDetails == null){
             return  null;
         }
@@ -66,13 +62,13 @@ public class UserDAOImpl {
             return  user;
         }
         user.assetIds.add(id);
-        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
-        return user;
+        redis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
+        return Formatter.toObject(redis.getByString(Long.toString(user.governmentID)),UserDAO.class);
     }
 
     @CrossOrigin
     @PutMapping ("/addToken")
-    public  Object addNewToken(@RequestParam  String governmentId,@RequestBody Map<String,String> token) throws JsonProcessingException {
+    public  UserDAO addNewToken(@RequestParam  String governmentId,@RequestBody Map<String,String> token) throws JsonProcessingException {
         IJedis jedis = new JedisImx();
         String userDetails = jedis.getByString(governmentId);
         if(userDetails == null){
@@ -81,11 +77,11 @@ public class UserDAOImpl {
         UserDAO user = Formatter.convertToObject(userDetails,UserDAO.class);
         user.tokenIds.add(token.get("tokenId"));
         jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
-        return user;
+        return Formatter.toObject(redis.getByString(Long.toString(user.governmentID)),UserDAO.class);
     }
 
     @CrossOrigin @PutMapping("/removeAsset")
-    public Object removeAsset(@RequestParam  String governmentId,  @RequestBody Map<String,String> asset) throws IOException{
+    public UserDAO removeAsset(@RequestParam  String governmentId,  @RequestBody Map<String,String> asset) throws IOException{
         IJedis jedis = new JedisImx();
         String userDetails = jedis.getByString(governmentId);
         UserDAO user = Formatter.convertToObject(userDetails,UserDAO.class);
@@ -95,7 +91,6 @@ public class UserDAOImpl {
             jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
             return user;
         }
-        return user;
-
+        return Formatter.toObject(redis.getByString(Long.toString(user.governmentID)),UserDAO.class);
     }
 }

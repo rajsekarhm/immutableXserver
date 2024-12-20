@@ -60,41 +60,12 @@ public class CustodianDAO extends UserDAO {
             return  this;
         }
 
-        public Builder setagentId(long _agentId){
+        public Builder setAgentId(long _agentId){
             this.agentId = _agentId;
             return this;
         }
         public  CustodianDAO build(){
             return  new CustodianDAO(this);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "CustodianDAO{" +
-                "userName='" + getFirstName() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", isAgent=" + getIsAgent() +
-                ", phoneNumber=" + getPhoneNumber() +
-                ", edition='" + getEdition() + '\'' +
-                ", isAuthForBuyAndSell=" + getIsAuthForBuyAndSell() +
-                ", governmentID=" + getGovernmentID() +
-                ", orgId=" + orgId +
-                ", agentId=" + agentId +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), orgId, agentId);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CustodianDAO)) return false;
-        if (!super.equals(o)) return false;
-        CustodianDAO that = (CustodianDAO) o;
-        return orgId == that.orgId && agentId == that.agentId;
     }
 }
