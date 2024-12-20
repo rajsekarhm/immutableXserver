@@ -1,11 +1,8 @@
 package com.persistence.query;
 import java.lang.reflect.Field;
 
-
-import java.lang.reflect.Field;
-
 public class QueryBuilder<T>  {
-    public  StringBuilder createQueryBuilder(Class<T> type){
+    public  StringBuilder createQueryBuilder(Class<T> type, String className){
         // INSERT INTO metadata(assetType,assetId,walletAddress,isApproved,assetInUsd) VALUES (?,?,?,?,?)
         StringBuilder query = new StringBuilder("INSERT INTO ");
         query.append(getClassName(type)).append("(");
@@ -22,7 +19,7 @@ public class QueryBuilder<T>  {
         return  query;
     }
 
-    public StringBuilder updateQueryBuilder(Class<T> type, String updateBy,String... updateKeys){
+    public StringBuilder updateQueryBuilder(Class<T> type, String updateBy,String...updateKeys){
         //  UPDATE metadata SET assetType = ?, walletAddress = ?, isApproved = ?, assetInUsd = ? WHERE assetId = ?;
         //UPDATE metadata SET assetId = ?,a = ?,b = ?,c = ?,d = ? WHERE MetaData= ?
         StringBuilder query = new StringBuilder("UPDATE ");

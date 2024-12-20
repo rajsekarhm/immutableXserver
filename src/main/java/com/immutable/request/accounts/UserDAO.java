@@ -118,56 +118,12 @@ public class UserDAO {
         return isAuthForBuyAndSell;
     }
 
-    @Override
-    public String toString() {
-        return "UserDAO{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", password='" + password + '\'' +
-                ", location='" + location + '\'' +
-                ", governmentID=" + governmentID +
-                ", edition='" + edition + '\'' +
-                ", isAgent=" + isAgent +
-                ", securityId=" + securityId +
-                ", isAuthForBuyAndSell=" + isAuthForBuyAndSell +
-                ", tokenIds ="+ tokenIds +
-                ", assetIds ="+ assetIds +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email, phoneNumber, password, location, governmentID,
-                edition, isAgent, securityId, isAuthForBuyAndSell,tokenIds,assetIds);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDAO userDAO = (UserDAO) o;
-        return Objects.equals(firstName, userDAO.firstName) &&
-                Objects.equals(lastName, userDAO.lastName) &&
-                Objects.equals(email, userDAO.email) &&
-                Objects.equals(phoneNumber, userDAO.phoneNumber) &&
-                Objects.equals(password, userDAO.password) &&
-                Objects.equals(location, userDAO.location) &&
-                Objects.equals(governmentID, userDAO.governmentID) &&
-                Objects.equals(edition, userDAO.edition) &&
-                Objects.equals(isAgent, userDAO.isAgent) &&
-                Objects.equals(securityId, userDAO.securityId) &&
-                Objects.equals(isAuthForBuyAndSell, userDAO.isAuthForBuyAndSell)&&
-                Objects.equals(assetIds, userDAO.assetIds) &&
-                Objects.equals(tokenIds, userDAO.tokenIds);
-    }
 
     public static class Builder {
          String firstName;
          String lastName;
          String email;
-        String phoneNumber;
+         String phoneNumber;
          String password;
          String location;
          Long governmentID;
@@ -176,7 +132,7 @@ public class UserDAO {
          Long securityId;
          Boolean isAuthForBuyAndSell;
          List<String> assetIds;
-          List<String> tokenIds;
+         List<String> tokenIds;
 
 
         public Builder setFirstName(String firstName) {

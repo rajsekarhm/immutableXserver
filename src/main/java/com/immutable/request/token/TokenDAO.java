@@ -1,9 +1,10 @@
-package com.immutable.request.assets;
+package com.immutable.request.token;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.kafka.common.protocol.types.Field;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class TokenDAO {
      String walletAddress;
      String numberOfTokens;
