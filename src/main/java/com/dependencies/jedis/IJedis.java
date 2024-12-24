@@ -17,4 +17,5 @@ public interface IJedis {
     public Map<String, String> hSetAll(String key);
     public String mSet(String... key);
     public long hSetByString(String key, Map<String, String> field);
+    public Boolean exists(String id);
 }

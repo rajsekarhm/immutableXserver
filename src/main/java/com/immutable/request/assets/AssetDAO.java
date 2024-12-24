@@ -57,6 +57,26 @@ public class AssetDAO {
         return assetId;
     }
 
+    public long getValue() {
+        return value;
+    }
+
+    public String getAssetAddress() {
+        return assetAddress;
+    }
+
+    public String getAssetURI() {
+        return assetURI;
+    }
+
+    public String getAssociatedUser() {
+        return associatedUser;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
     public  static  class  Builder{
         String associatedUser;
         String assetId;
