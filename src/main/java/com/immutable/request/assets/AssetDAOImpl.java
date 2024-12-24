@@ -17,8 +17,11 @@ public class AssetDAOImpl implements IAssetsHandler<AssetDAO>{
 
     @Override @PostMapping("/createAsset")@CrossOrigin
     public AssetDAO create(@RequestBody AssetDAO asset) {
+        if(redis.exists(asset.getAssetId())){
+            return  null;
+        }
         redis.setByString(asset.getAssetId(),gson.toJson(asset));
-        return Formatter.toObject(redis.getByString(asset.getAssetId()),AssetDAO.class);
+        return  Formatter.toObject(redis.getByString(asset.getAssetId()),AssetDAO.class);
     }
 
     @Override @PutMapping("/updateAsset")@CrossOrigin
@@ -29,7 +32,8 @@ public class AssetDAOImpl implements IAssetsHandler<AssetDAO>{
 
     @Override @GetMapping("/getAsset")@CrossOrigin
     public AssetDAO get(@RequestParam String assetId) {
-        return Formatter.toObject(redis.getByString(assetId),AssetDAO.class);
+        String assetDetails = redis.getByString(assetId);
+        return Formatter.toObject(assetDetails,AssetDAO.class);
     }
 
     @Override @DeleteMapping("/deleteAsset")@CrossOrigin

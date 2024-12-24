@@ -103,4 +103,9 @@ import java.util.Map;
     public long hSetByString(String key, Map<String, String> field) {
         return jediss.hset(key,field);
     }
+
+     @Override
+     public Boolean exists(String id) {
+         return jediss.exists(id);
+     }
 }

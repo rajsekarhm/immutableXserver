@@ -25,6 +25,9 @@ public class UserDAOImpl {
     @CrossOrigin
     @PostMapping("/createUser")
     public UserDAO createUser(@RequestBody  UserDAO user) throws IOException {
+        if(redis.exists(user.getGovernmentID().toString())){
+            return  null;
+        }
         redis.setByString(user.getGovernmentID().toString(), Formatter.toJSON(user));
         return Formatter.toObject(redis.getByString(user.getGovernmentID().toString()),UserDAO.class);
     }

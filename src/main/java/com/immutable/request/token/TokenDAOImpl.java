@@ -16,9 +16,13 @@ public class TokenDAOImpl implements IAssetsHandler<TokenDAO> {
             .serializeNulls()
             .create();
     private  IJedis redis = new JedisImx();
+
     @Override
     @CrossOrigin @PostMapping("/createToken")
     public TokenDAO create(@RequestBody TokenDAO token) {
+        if(redis.exists(token.getTokenId())){
+            return null;
+        }
         redis.setByString(token.getTokenId(),gson.toJson(token));
         return token;
     }
@@ -34,7 +38,7 @@ public class TokenDAOImpl implements IAssetsHandler<TokenDAO> {
     @Override
     @CrossOrigin @GetMapping("/getToken")
     public TokenDAO get(@RequestParam String tokenId) {
-        return Formatter.toObject(Formatter.toJSON(redis.getByString(tokenId)),TokenDAO.class);
+        return Formatter.toObject(redis.getByString(tokenId),TokenDAO.class);
     }
 
     @Override
