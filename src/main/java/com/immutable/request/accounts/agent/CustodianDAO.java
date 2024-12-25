@@ -1,6 +1,6 @@
-package com.immutable.request.accounts;
+package com.immutable.request.accounts.agent;
 
-import java.util.Objects;
+import com.immutable.request.accounts.user.UserDAO;
 
 public class CustodianDAO extends UserDAO {
     private long orgId;
@@ -21,37 +21,37 @@ public class CustodianDAO extends UserDAO {
          long agentId;
 
         public Builder setUserName(String firstName) {
-            this.firstName = firstName;
+            this.setFirstName(firstName);
             return this;
         }
 
         public Builder setEmail(String email) {
-            this.email = email;
+            this.setEmail(email);
             return this;
         }
 
         public Builder setIsAgent(Boolean isAgent) {
-            this.isAgent = isAgent;
+            this.setIsAgent(isAgent);
             return this;
         }
 
         public Builder setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
+            this.setPhoneNumber(phoneNumber);
             return this;
         }
 
         public Builder setEdition(String edition) {
-            this.edition = edition;
+            this.setEdition(edition);
             return this;
         }
 
         public Builder setIsAuthForBuyAndSell(Boolean isAuthForBuyAndSell) {
-            this.isAuthForBuyAndSell = isAuthForBuyAndSell;
+            this.setIsAuthForBuyAndSell(isAuthForBuyAndSell);
             return this;
         }
 
         public Builder setGovernmentID(Long governmentID) {
-            this.governmentID = governmentID;
+            this.setGovernmentID(governmentID);
             return this;
         }
 

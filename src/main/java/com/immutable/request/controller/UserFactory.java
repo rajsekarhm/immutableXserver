@@ -1,6 +1,6 @@
 package com.immutable.request.controller;
 
-import com.immutable.request.accounts.UserDAO;
+import com.immutable.request.accounts.user.UserDAO;
 
 public class UserFactory implements AccountFactory<UserDAO> {
 

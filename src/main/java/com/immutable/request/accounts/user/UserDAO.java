@@ -1,9 +1,8 @@
-package com.immutable.request.accounts;
+package com.immutable.request.accounts.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 
 public class UserDAO {
     public String firstName;
@@ -51,7 +50,7 @@ public class UserDAO {
         this.tokenIds =tokenHolding;
     }
 
-    UserDAO(Builder builder) {
+    protected UserDAO(Builder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;

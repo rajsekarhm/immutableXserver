@@ -1,5 +1,5 @@
 package com.immutable.request;
-import com.immutable.request.accounts.UserDAO;
+import com.immutable.request.accounts.user.UserDAO;
 import lombok.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
