@@ -1,12 +1,8 @@
-package com.immutable.request.accounts;
+package com.immutable.request.accounts.user;
 
-import com.persistence.database.SqlHandler;
 import com.persistence.orm.IOrmActions;
-import com.persistence.query.QueryBuilder;
-import java.lang.reflect.Field;
+
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class UserPersistence implements IOrmActions<UserDAO,Connection> {
     @Override
