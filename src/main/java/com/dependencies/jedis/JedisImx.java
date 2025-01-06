@@ -1,4 +1,6 @@
 package com.dependencies.jedis;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -6,6 +8,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.List;
 import java.util.Map;
 
+@Component
  public class JedisImx implements IJedis {
     static  Jedis jediss;
     static  JedisPool jedisPool;

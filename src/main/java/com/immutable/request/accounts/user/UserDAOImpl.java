@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,13 @@ import java.util.Map;
 @RequestMapping("api/v1/user")@CrossOrigin
 public class UserDAOImpl {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-    private  IJedis redis = new JedisImx();
+    private final IJedis redis;
+
+    @Autowired
+    public UserDAOImpl(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
+    }
+
     @CrossOrigin
     @GetMapping("/accessibility")
     public Boolean userAccessibility() {

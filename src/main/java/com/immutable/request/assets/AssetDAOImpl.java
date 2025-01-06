@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.immutable.request.accounts.user.UserDAO;
 import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,12 @@ import java.util.Map;
 @RequestMapping("/api/v1/asset") @CrossOrigin
 public class AssetDAOImpl implements IAssetsHandler<AssetDAO>{
     private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-    private IJedis redis = new JedisImx();
+    private final IJedis redis;
+
+    @Autowired
+    public AssetDAOImpl(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
+    }
 
     @Override @PostMapping(value = "/createAsset", produces = MediaType.APPLICATION_JSON_VALUE) @CrossOrigin
     public ResponseSchema<AssetDAO> create(@RequestBody AssetDAO asset) {
