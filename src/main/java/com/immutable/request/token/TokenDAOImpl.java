@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.immutable.request.assets.IAssetsHandler;
 import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/token") @CrossOrigin
 public class TokenDAOImpl implements IAssetsHandler<TokenDAO> {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-    private  IJedis redis = new JedisImx();
+    private final IJedis redis;
+
+    @Autowired
+    public TokenDAOImpl(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
+    }
 
     @Override
     @CrossOrigin @PostMapping(value = "/createToken", produces = MediaType.APPLICATION_JSON_VALUE)
