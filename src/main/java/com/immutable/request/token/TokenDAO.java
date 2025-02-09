@@ -1,94 +1,53 @@
 package com.immutable.request.token;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
+import com.dependencies.jedis.IJedis;
+import com.dependencies.utils.ResponseSchema;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.immutable.request.assets.IAssetsHandler;
+import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-@EqualsAndHashCode
-public class TokenDAO {
-     String walletAddress;
-     String numberOfTokens;
-     String symbol;
-     String tokenName;
-     String tokenId;
+@RestController
+@RequestMapping("/api/v1/token") @CrossOrigin
+public class TokenDAO implements IAssetsHandler<Token> {
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+    private final IJedis redis;
 
-    public TokenDAO(){}
-    @JsonCreator
-    public TokenDAO(@JsonProperty("walletAddress") String _walletAddress,
-                    @JsonProperty("numberOfTokens") String _numberOfToken,
-                    @JsonProperty("symbol") String _symbol,
-                    @JsonProperty("tokenName") String _tokenName,
-                    @JsonProperty("tokenId") String _tokenId){
-        this.numberOfTokens= _numberOfToken;
-        this.symbol = _symbol;
-        this.walletAddress = _walletAddress;
-        this.tokenName = _tokenName;
-        this.tokenId = _tokenId;
-    }
-    public TokenDAO(Builder builder) {
-        this.walletAddress = builder.walletAddress;
-        this.numberOfTokens = builder.numberOfTokens;
-        this.symbol = builder.symbol;
-        this.tokenName = builder.tokenName;
-        this.tokenId = builder.tokenId;
+    @Autowired
+    public TokenDAO(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
     }
 
-    public String getTokenId() {
-        return tokenId;
+    @Override
+    @CrossOrigin @PostMapping(value = "/createToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<Token> create(@RequestBody Token token) {
+        redis.setByString(token.getTokenId(),gson.toJson(token));
+        return ResponseSchema.of(token, HttpStatus.OK,"createToken");
     }
 
-    public String getWalletAddress() {
-        return walletAddress;
+
+    @Override
+    @CrossOrigin @PutMapping(value = "/updateToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<Token> update(@RequestParam String tokenId, @RequestBody Token token) {
+        redis.setByString(tokenId,Formatter.toJSON(token));
+        return ResponseSchema.of(Formatter.toObject(redis.getByString(tokenId), Token.class),HttpStatus.OK,"updateToken");
     }
 
-    public String getNumberOfTokens() {
-        return numberOfTokens;
+    @Override
+    @CrossOrigin @GetMapping(value = "/getToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<Token> get(@RequestParam String tokenId) {
+        return ResponseSchema.of(Formatter.toObject(redis.getByString(tokenId), Token.class),HttpStatus.OK,"getToken");
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public String getTokenName() {
-        return tokenName;
-    }
-
-    public static class Builder {
-         String walletAddress;
-         String numberOfTokens;
-         String symbol;
-         String tokenName;
-         String tokenId;
-
-        public Builder() {}
-
-        public Builder setTokenId(String tokenId) {
-            this.tokenId = tokenId;
-            return this;
-        }
-
-        public Builder setWalletAddress(String walletAddress) {
-            this.walletAddress = walletAddress;
-            return this;
-        }
-
-        public Builder setNumberOfTokens(String numberOfToken) {
-            this.numberOfTokens = numberOfToken;
-            return this;
-        }
-
-        public Builder setSymbol(String symbol) {
-            this.symbol = symbol;
-            return this;
-        }
-
-        public Builder setTokenName(String tokenName) {
-            this.tokenName = tokenName;
-            return this;
-        }
-
-        public TokenDAO build() {
-            return new TokenDAO(this);
-        }
+    @Override
+    @CrossOrigin @DeleteMapping(value = "/deleteToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<Token> delete(@RequestParam  String tokenId) {
+        redis.setByString(tokenId,null);
+        return ResponseSchema.of(null,HttpStatus.OK,"deleteToken");
     }
 }
