@@ -1,71 +1,28 @@
 package com.immutable.request.accounts.agent;
 
-import com.immutable.request.accounts.user.UserDAO;
+import org.springframework.web.bind.annotation.*;
 
-public class CustodianDAO extends UserDAO {
-    private long orgId;
-    private long agentId;
-    private  CustodianDAO(CustodianDAO.Builder builder){
-        super(builder);
-        this.orgId = builder.orgId;
-        this.agentId = builder.agentId;
+@RestController
+@RequestMapping("api/v1/agents")@CrossOrigin
+public class CustodianDAO {
+    public  Boolean CustodianAccessibility(){
+        return  true;
     }
-    public  long getOrgId(){
-        return  orgId;
+
+    @PostMapping("/createCustodian")@CrossOrigin
+    public  String  createCustodian(@RequestBody Custodian.Builder createCustodian){
+        return "ok";
     }
-    public  long getagentId(){
-        return  agentId;
+    @PutMapping("/updateCustodian")@CrossOrigin
+    public  String updateCustodian(@RequestBody Custodian.Builder updateCustodian){
+        return "ok";
     }
-    public static class Builder extends  UserDAO.Builder {
-         long orgId;
-         long agentId;
-
-        public Builder setUserName(String firstName) {
-            this.setFirstName(firstName);
-            return this;
-        }
-
-        public Builder setEmail(String email) {
-            this.setEmail(email);
-            return this;
-        }
-
-        public Builder setIsAgent(Boolean isAgent) {
-            this.setIsAgent(isAgent);
-            return this;
-        }
-
-        public Builder setPhoneNumber(String phoneNumber) {
-            this.setPhoneNumber(phoneNumber);
-            return this;
-        }
-
-        public Builder setEdition(String edition) {
-            this.setEdition(edition);
-            return this;
-        }
-
-        public Builder setIsAuthForBuyAndSell(Boolean isAuthForBuyAndSell) {
-            this.setIsAuthForBuyAndSell(isAuthForBuyAndSell);
-            return this;
-        }
-
-        public Builder setGovernmentID(Long governmentID) {
-            this.setGovernmentID(governmentID);
-            return this;
-        }
-
-        public  Builder setOrgId(long _orgId){
-            this.orgId = _orgId;
-            return  this;
-        }
-
-        public Builder setAgentId(long _agentId){
-            this.agentId = _agentId;
-            return this;
-        }
-        public  CustodianDAO build(){
-            return  new CustodianDAO(this);
-        }
+    @DeleteMapping("/deleteCustodian")@CrossOrigin
+    public  String  deleteCustodian(@RequestParam  long governmentId){
+        return "ok";
+    }
+    @GetMapping(value = "/getCustodian")@CrossOrigin
+    public  String getCustodian(@RequestParam long governmentId){
+        return "ok";
     }
 }

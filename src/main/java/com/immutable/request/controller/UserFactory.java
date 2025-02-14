@@ -1,10 +1,10 @@
 package com.immutable.request.controller;
 
-import com.immutable.request.accounts.user.UserDAO;
+import com.immutable.request.accounts.user.User;
 
-public class UserFactory implements AccountFactory<UserDAO> {
+public class UserFactory implements AccountFactory<User> {
 
-    public UserDAO create(UserDAO createEntity){
-        return new UserDAO.Builder().build();
+    public User create(User createEntity){
+        return new User.Builder().build();
     }
 }

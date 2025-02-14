@@ -1,211 +1,119 @@
 package com.immutable.request.accounts.user;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.dependencies.jedis.IJedis;
+import com.dependencies.jedis.JedisImx;
+import com.dependencies.utils.ResponseSchema;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.immutable.request.assets.Asset;
+import com.immutable.request.token.Token;
+import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+@RestController
+@RequestMapping("api/v1/user")@CrossOrigin
 public class UserDAO {
-    public String firstName;
-    public String lastName;
-    public String email;
-    public String phoneNumber;
-    public String password;
-    public String location;
-    public Long governmentID;
-    public String edition;
-    public Boolean isAgent;
-    public Long securityId;
-    public Boolean isAuthForBuyAndSell;
-    public List<String> assetIds;
-    public  List<String> tokenIds;
-    public  UserDAO() {}
-    @JsonCreator
-    public UserDAO(
-            @JsonProperty("firstName") String firstName,
-            @JsonProperty("lastName") String lastName,
-            @JsonProperty("email") String email,
-            @JsonProperty("phoneNumber") String phoneNumber,
-            @JsonProperty("password") String password,
-            @JsonProperty("location") String location,
-            @JsonProperty("governmentID") Long governmentID,
-            @JsonProperty("edition") String edition,
-            @JsonProperty("isAgent") Boolean isAgent,
-            @JsonProperty("securityId") Long securityId,
-            @JsonProperty("isAuthForBuyAndSell") Boolean isAuthForBuyAndSell,
-            @JsonProperty("assetIds") List<String> assetHolding,
-            @JsonProperty("tokenIds") List<String> tokenHolding
-    ) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.location = location;
-        this.governmentID = governmentID;
-        this.edition = edition;
-        this.isAgent = isAgent;
-        this.securityId = securityId;
-        this.isAuthForBuyAndSell = isAuthForBuyAndSell;
-        this.assetIds = assetHolding;
-        this.tokenIds =tokenHolding;
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+    private final IJedis redis;
+
+    @Autowired
+    public UserDAO(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
     }
 
-    protected UserDAO(Builder builder) {
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-        this.email = builder.email;
-        this.phoneNumber = builder.phoneNumber;
-        this.password = builder.password;
-        this.location = builder.location;
-        this.governmentID = builder.governmentID;
-        this.edition = builder.edition;
-        this.isAgent = builder.isAgent;
-        this.securityId = builder.securityId;
-        this.isAuthForBuyAndSell = builder.isAuthForBuyAndSell;
+    @CrossOrigin
+    @GetMapping("/accessibility")
+    public Boolean userAccessibility() {
+        return true;
     }
 
-    public List<String> getAssetIds() {
-        return assetIds;
+    @CrossOrigin
+    @PostMapping(value = "/createUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<User> createUser(@RequestBody User user) throws IOException {
+        redis.setByString(user.getGovernmentID().toString(), Formatter.toJSON(user));
+        User newUser = Formatter.toObject(redis.getByString(user.getGovernmentID().toString()), User.class);
+        return ResponseSchema.of(newUser, HttpStatus
+                .CREATED,"created");
     }
 
-    public List<String> getTokenIds() {
-        return tokenIds;
+    @PutMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE) @CrossOrigin
+    public ResponseSchema<User> updateUser(@RequestBody User user) {
+        redis.setByString(user.governmentID.toString(), Formatter.toJSON(user));
+        User getUser =  Formatter.toObject(redis.getByString(user.getGovernmentID().toString()), User.class);
+        return ResponseSchema.of(getUser,HttpStatus.OK,"update");
     }
 
-    public String getFirstName() {
-        return firstName;
+    @CrossOrigin
+    @DeleteMapping(value = "/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<User> deleteUser(@RequestParam String governmentId) {
+        redis.setByString(governmentId,null);
+        return ResponseSchema.of(null,HttpStatus.OK,"deleted");
     }
 
-    public String getLastName() {
-        return lastName;
+    @CrossOrigin
+    @GetMapping(value = "/getUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<UserDTO> getUser(@RequestParam String governmentId) {
+        IJedis jedis = new JedisImx();
+        UserDTO _userDTO = new UserDTO();
+        User userDetails = Formatter.toObject(jedis.getByString(governmentId), User.class);
+        List<String> currentUserTokens = userDetails.tokenIds;
+        List<String>  currentUserAssets = userDetails.assetIds;
+        _userDTO.user = userDetails;
+        currentUserAssets.forEach( id -> _userDTO.assets.add(Formatter.toObject(jedis.getByString(id), Asset.class)));
+        currentUserTokens.forEach( id -> _userDTO.tokens.add(Formatter.toObject(jedis.getByString(id), Token.class)));
+        return ResponseSchema.of(Formatter.toObject(Formatter.toJSON(_userDTO),UserDTO.class),HttpStatus.OK,"get");
     }
 
-    public String getEmail() {
-        return email;
+    @CrossOrigin
+    @PutMapping(value = "/addAsset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<User> addNewAsset(@RequestParam  String governmentId, @RequestBody Map<String,String> asset) throws IOException {
+        String userDetails = redis.getByString(governmentId);
+        if(userDetails == null){
+            return  null;
+        }
+        User user = Formatter.convertToObject(userDetails, User.class);
+        String id =  asset.get("assetId");
+        if(user.assetIds.contains(id)){
+            return  ResponseSchema.of(user,HttpStatus.NOT_FOUND,"exist_assetAdded");
+        }
+        user.assetIds.add(id);
+        redis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
+        return ResponseSchema.of(Formatter.toObject(redis.getByString(Long.toString(user.governmentID)), User.class),HttpStatus.OK,"assetAdded");
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    @CrossOrigin
+    @PutMapping (value = "/addToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseSchema<User> addNewToken(@RequestParam  String governmentId, @RequestBody Map<String,String> token) throws JsonProcessingException {
+        IJedis jedis = new JedisImx();
+        String userDetails = jedis.getByString(governmentId);
+        if(userDetails == null){
+            return  null;
+        }
+        User user = Formatter.convertToObject(userDetails, User.class);
+        user.tokenIds.add(token.get("tokenId"));
+        jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
+        return ResponseSchema.of( Formatter.toObject(redis.getByString(Long.toString(user.governmentID)), User.class),HttpStatus.OK,"tokenAdded");
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public Long getGovernmentID() {
-        return governmentID;
-    }
-
-    public String getEdition() {
-        return edition;
-    }
-
-    public Boolean getIsAgent() {
-        return isAgent;
-    }
-
-    public Long getsecurityId() {
-        return securityId;
-    }
-
-    public Boolean getIsAuthForBuyAndSell() {
-        return isAuthForBuyAndSell;
-    }
-
-
-    public static class Builder {
-         String firstName;
-         String lastName;
-         String email;
-         String phoneNumber;
-         String password;
-         String location;
-         Long governmentID;
-         String edition;
-         Boolean isAgent;
-         Long securityId;
-         Boolean isAuthForBuyAndSell;
-         List<String> assetIds;
-         List<String> tokenIds;
-
-
-        public Builder setFirstName(String firstName) {
-            this.firstName = firstName;
-            return this;
+    @CrossOrigin @PutMapping(value = "/removeAsset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseSchema<User> removeAsset(@RequestParam  String governmentId, @RequestBody Map<String,String> asset) throws IOException{
+        IJedis jedis = new JedisImx();
+        String userDetails = jedis.getByString(governmentId);
+        User user = Formatter.convertToObject(userDetails, User.class);
+        String id =  asset.get("assetId");
+        if(user.assetIds.contains(id)){
+            user.assetIds.remove(id);
+            jedis.setByString(Long.toString(user.governmentID), Formatter.toJSON(user));
+            return ResponseSchema.of(user,HttpStatus.ACCEPTED,"removeAsset");
         }
-
-        public Builder setLastName(String lastName) {
-            this.lastName = lastName;
-            return this;
-        }
-
-        public Builder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder setPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder setLocation(String location) {
-            this.location = location;
-            return this;
-        }
-
-        public Builder setGovernmentID(Long governmentID) {
-            this.governmentID = governmentID;
-            return this;
-        }
-
-        public Builder setEdition(String edition) {
-            this.edition = edition;
-            return this;
-        }
-
-        public Builder setIsAgent(Boolean isAgent) {
-            this.isAgent = isAgent;
-            return this;
-        }
-
-        public Builder setSecurityId(Long securityId) {
-            this.securityId = securityId;
-            return this;
-        }
-
-        public Builder setIsAuthForBuyAndSell(Boolean isAuthForBuyAndSell) {
-            this.isAuthForBuyAndSell = isAuthForBuyAndSell;
-            return this;
-        }
-
-        public Builder setTokenIds(List<String> _tokenIds){
-            this.tokenIds = _tokenIds;
-            return this;
-        }
-
-        public Builder setAssetIds(List<String> assetIds) {
-            this.assetIds = assetIds;
-            return this;
-
-        }
-
-        public UserDAO build() {
-            return new UserDAO(firstName,lastName,email,phoneNumber,password,location,governmentID,edition,isAgent,securityId,isAuthForBuyAndSell,assetIds,
-                    tokenIds);
-        }
-
-        public UserDAO _build(){
-            return  new UserDAO(this);
-        }
+        return ResponseSchema.of(Formatter.toObject(redis.getByString(Long.toString(user.governmentID)), User.class),HttpStatus.OK,"removeAsset");
     }
 }

@@ -4,24 +4,24 @@ import com.persistence.orm.IOrmActions;
 
 import java.sql.Connection;
 
-public class UserPersistence implements IOrmActions<UserDAO,Connection> {
+public class UserPersistence implements IOrmActions<User,Connection> {
     @Override
-    public void create(UserDAO entity) throws Exception {
+    public void create(User entity) throws Exception {
 
     }
 
     @Override
-    public void update(UserDAO entity, String tableName, String updateBy, String updateValue, String... updateKeys) throws Exception {
+    public void update(User entity, String tableName, String updateBy, String updateValue, String... updateKeys) throws Exception {
 
     }
 
     @Override
-    public UserDAO getBy(UserDAO entity) throws Exception {
+    public User getBy(User entity) throws Exception {
         return null;
     }
 
     @Override
-    public void deleteBy(UserDAO entity) throws Exception {
+    public void deleteBy(User entity) throws Exception {
 
     }
 

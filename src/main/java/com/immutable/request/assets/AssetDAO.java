@@ -1,144 +1,71 @@
 package com.immutable.request.assets;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
+import com.dependencies.jedis.IJedis;
+import com.dependencies.utils.ResponseSchema;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.immutable.request.accounts.user.User;
+import com.immutable.request.utils.Formatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
-@EqualsAndHashCode
-public class AssetDAO {
-     String associatedUser;
-     String assetId;
-     String symbol;
-     String assetURI;
-     long value;
-     String assetAddress;
-     boolean isValidated;
-     boolean isForSale;
-     boolean isFungible;
+@RestController
+@RequestMapping("/api/v1/asset") @CrossOrigin
+public class AssetDAO implements IAssetsHandler<Asset>{
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+    private final IJedis redis;
 
-    public AssetDAO() {}
-
-    @JsonCreator
-    public AssetDAO(
-            @JsonProperty("assetId") String assetId,
-            @JsonProperty("symbol") String symbol,
-            @JsonProperty("assetURI") String assetURI,
-            @JsonProperty("value") long value,
-            @JsonProperty("assetAddress") String assetAddress,
-            @JsonProperty("isValidated") boolean isValidated,
-            @JsonProperty("associatedUser") String associatedUser,
-            @JsonProperty("isForSale") boolean isForSale,
-            @JsonProperty("isFungible") boolean isFungible
-    ) {
-        this.assetId = assetId;
-        this.symbol = symbol;
-        this.assetURI = assetURI;
-        this.value = value;
-        this.assetAddress = assetAddress;
-        this.isValidated = isValidated;
-        this.associatedUser = associatedUser;
-        this.isForSale = isForSale;
-        this.isFungible = isFungible;
+    @Autowired
+    public AssetDAO(@Qualifier("jedisImx") IJedis redis) {
+        this.redis = redis;
     }
 
-    public AssetDAO(AssetDAO.Builder asset){
-        this.assetId = asset.assetId;
-        this.symbol = asset.symbol;
-        this.assetURI = asset.assetURI;
-        this.value = asset.value;
-        this.assetAddress = asset.assetAddress;
-        this.isValidated = asset.isValidated;
-        this.associatedUser = asset.associatedUser;
-        this.isForSale = asset.isForSale;
-        this.isFungible = asset.isFungible;
+    @Override @PostMapping(value = "/createAsset", produces = MediaType.APPLICATION_JSON_VALUE) @CrossOrigin
+    public ResponseSchema<Asset> create(@RequestBody Asset asset) {
+        redis.setByString(asset.getAssetId(),gson.toJson(asset));
+        return  ResponseSchema.of(Formatter.toObject(redis.getByString(asset.getAssetId()), Asset.class), HttpStatus.OK,"createAsset");
     }
 
-    public String getAssetId() {
-        return assetId;
+    @Override @PutMapping(value = "/updateAsset", produces = MediaType.APPLICATION_JSON_VALUE)@CrossOrigin
+    public ResponseSchema<Asset> update(@RequestParam String assetId, @RequestBody Asset asset) {
+        redis.setByString(assetId,Formatter.toJSON(asset));
+        return ResponseSchema.of(Formatter.toObject(redis.getByString(assetId), Asset.class),HttpStatus.OK,"updateAsset");
     }
 
-    public long getValue() {
-        return value;
+    @Override @GetMapping(value = "/getAsset", produces = MediaType.APPLICATION_JSON_VALUE)@CrossOrigin
+    public ResponseSchema<AssetDTO> get(@RequestParam String assetId) {
+        String assetDetails = redis.getByString(assetId);
+        AssetDTO  assetDTO = new AssetDTO();
+        Asset asset = Formatter.toObject(assetDetails,Asset.class);
+        assetDTO.setAsset(asset);
+        assetDTO.setAssetId(assetId);
+        assetDTO.setUserId(asset.getAssociatedUser());
+        return  ResponseSchema.of(assetDTO,HttpStatus.OK
+                ,"getAsset");
     }
 
-    public String getAssetAddress() {
-        return assetAddress;
+    @Override @DeleteMapping(value = "/deleteAsset", produces = MediaType.APPLICATION_JSON_VALUE)@CrossOrigin
+    public ResponseSchema<Asset> delete(@RequestParam String assetId) {
+        redis.setByString(assetId,null);
+        return ResponseSchema.of(Formatter.toObject(null, Asset.class),HttpStatus.OK
+                ,"deleteAsset");
     }
 
-    public String getAssetURI() {
-        return assetURI;
-    }
-
-    public String getAssociatedUser() {
-        return associatedUser;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public  static  class  Builder{
-        String associatedUser;
-        String assetId;
-        String symbol;
-        String assetURI;
-        long value;
-        String assetAddress;
-        boolean isValidated;
-        boolean isForSale;
-        boolean isFungible;
-
-        public Builder setAssetAddress(String assetAddress) {
-            this.assetAddress = assetAddress;
-            return this;
-        }
-
-        public Builder setForSale(boolean forSale) {
-            isForSale = forSale;
-            return this;
-        }
-
-        public Builder setIsFungible(boolean isFungible) {
-            this.isFungible = isFungible;
-            return this;
-        }
-
-        public Builder setAssociatedUser(String associatedUser) {
-            this.associatedUser = associatedUser;
-            return this;
-        }
-
-        public Builder setSymbol(String symbol) {
-            this.symbol = symbol;
-            return this;
-        }
-
-        public Builder setAssetId(String assetId) {
-            this.assetId = assetId;
-            return this;
-        }
-
-        public Builder setAssetURI(String assetURI) {
-            this.assetURI = assetURI;
-            return this;
-        }
-
-        public Builder setValue(long value) {
-            this.value = value;
-            return this;
-        }
-
-        public Builder setValidated(boolean validated) {
-            isValidated = validated;
-            return this;
-        }
-
-        public AssetDAO _build(){
-            return  new AssetDAO(this);
-        }
-
-        public  AssetDAO build(){
-            return  new AssetDAO(this.assetId,this.symbol,this.assetURI,this.value,this.assetAddress,this.isValidated,this.associatedUser,this.isForSale,this.isFungible);
-        }
+    @CrossOrigin  @PutMapping(value = "/changeAssociateUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseSchema<Asset> changeOwnerShip(@RequestParam String assetId, @RequestBody Map<String,String> user) throws JsonProcessingException {
+        String userId = user.get("userId");
+        User _user = Formatter.toObject(redis.getByString(userId), User.class);
+        _user.assetIds.add(assetId);
+        redis.setByString(userId,Formatter.toJSON(_user));
+        Asset asset = Formatter.convertToObject(redis.getByString(assetId), Asset.class);
+        asset.associatedUser = userId;
+        redis.setByString(assetId, gson.toJson(asset));
+        return ResponseSchema.of(asset,HttpStatus.OK,"changeAssociateUser");
     }
 }
+
