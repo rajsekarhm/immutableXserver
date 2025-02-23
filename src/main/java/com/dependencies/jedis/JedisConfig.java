@@ -1,5 +1,6 @@
 package com.dependencies.jedis;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;
@@ -19,8 +20,10 @@ public class JedisConfig {
     public static JedisPool getPool() {
         return jedisPool;
     }
-    @Bean
-    public IJedis jedis() {
+
+    @Bean(name = "jedisImx")
+    @Qualifier("jedisImx")
+    public IJedis jedisImx() {
         return new JedisImx();
     }
 }
