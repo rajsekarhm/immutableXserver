@@ -35,7 +35,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtToken.validateToken(jwt, userName)) {  // Changed to pass userName instead of empty string
+            if (jwtToken.validateToken(jwt, userName)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userName,
                         null,
