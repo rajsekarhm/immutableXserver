@@ -5,28 +5,26 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/auth") @CrossOrigin
+@RequestMapping("/api/v1")
+@CrossOrigin
 public class AuthController implements IAuthentication {
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private  JWTTokenUtil jwtUtil;
+    private JWTTokenUtil jwtUtil;
 
-    public  String authenticate(@RequestBody AuthRequest authRequest) throws Exception {
-        try{
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(),authRequest.getUserName()));
-        }catch (AuthenticationException error){
-            throw new Exception("Invalid username or password", error  );
-
+    @PostMapping("/auth")
+    public String authenticate(@RequestBody AuthRequest authRequest) throws Exception {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+        } catch (AuthenticationException error) {
+            throw new Exception("Invalid username or password", error);
         }
-        return  jwtUtil.generateToken(authRequest.getUserName());
+        return jwtUtil.generateToken(authRequest.getUserName());
     }
-
 }

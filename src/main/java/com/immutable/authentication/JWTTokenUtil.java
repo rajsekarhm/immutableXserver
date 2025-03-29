@@ -9,19 +9,19 @@ import java.util.Date;
 
 @Component
 public class JWTTokenUtil {
-    private  String secret = "secret";
+    private String secret = "secret";
     private long expirationTime = 1000 * 60 * 60 * 10;
 
-    public  String generateToken(String userName) {
+    public String generateToken(String userName) {
         return Jwts.builder()
                 .setSubject(userName)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(SignatureAlgorithm.HS256,secret)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    public boolean validateToken(String token, String username){
+    public boolean validateToken(String token, String username) {
         String extractedUsername = extractUsername(token);
         return username.equals(extractedUsername) && !isTokenExpired(token);
     }
