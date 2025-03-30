@@ -28,11 +28,11 @@ public class AuthUserDTO {
     }
 
     public String getPassword() {
-        return "password";
+        return "phonenumber";
     }
 
     public String getUserName() {
-        return "userName";
+        return "rajasekar";
     }
 
     public long getUserId() {
