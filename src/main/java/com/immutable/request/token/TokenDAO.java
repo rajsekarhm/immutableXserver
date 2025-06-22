@@ -41,7 +41,8 @@ public class TokenDAO implements IAssetsHandler<Token> {
     @Override
     @CrossOrigin @GetMapping(value = "/getToken", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseSchema<Token> get(@RequestParam String tokenId) {
-        return ResponseSchema.of(Formatter.toObject(redis.getByString(tokenId), Token.class),HttpStatus.OK,"getToken");
+        Token token = Formatter.toObject(redis.getByString(tokenId), Token.class);
+        return ResponseSchema.of(token,HttpStatus.OK,"getToken");
     }
 
     @Override
