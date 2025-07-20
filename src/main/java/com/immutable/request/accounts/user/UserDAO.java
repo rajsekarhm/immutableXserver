@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,8 @@ public class UserDAO {
     public ResponseSchema<User> createUser(@RequestBody User user) throws IOException {
         redis.setByString(user.getGovernmentID().toString(), Formatter.toJSON(user));
         User newUser = Formatter.toObject(redis.getByString(user.getGovernmentID().toString()), User.class);
+        newUser.tokenIds =  (newUser.tokenIds != null) ? newUser.tokenIds : new ArrayList<>();
+        newUser.assetIds =  (newUser.assetIds != null) ? newUser.assetIds : new ArrayList<>();
         return ResponseSchema.of(newUser, HttpStatus
                 .CREATED,"created");
     }
@@ -47,6 +51,7 @@ public class UserDAO {
     @PutMapping(value = "/updateUser", produces = MediaType.APPLICATION_JSON_VALUE) @CrossOrigin
     public ResponseSchema<User> updateUser(@RequestBody User user) {
         redis.setByString(user.governmentID.toString(), Formatter.toJSON(user));
+        UserDTO _userDTO = new UserDTO();
         User getUser =  Formatter.toObject(redis.getByString(user.getGovernmentID().toString()), User.class);
         return ResponseSchema.of(getUser,HttpStatus.OK,"update");
     }
@@ -64,11 +69,12 @@ public class UserDAO {
         IJedis jedis = new JedisImx();
         UserDTO _userDTO = new UserDTO();
         User userDetails = Formatter.toObject(jedis.getByString(governmentId), User.class);
-        List<String> currentUserTokens = userDetails.tokenIds;
-        List<String>  currentUserAssets = userDetails.assetIds;
+        List<String> currentUserTokens = (userDetails.tokenIds == null) ? new ArrayList<>() : new ArrayList<>(new HashSet<>(userDetails.tokenIds));
+        List<String>  currentUserAssets = (userDetails.assetIds == null) ? new ArrayList<>() : new ArrayList<>(new HashSet<>(userDetails.assetIds));
         _userDTO.user = userDetails;
         currentUserAssets.forEach( id -> _userDTO.assets.add(Formatter.toObject(jedis.getByString(id), Asset.class)));
         currentUserTokens.forEach( id -> _userDTO.tokens.add(Formatter.toObject(jedis.getByString(id), Token.class)));
+
         return ResponseSchema.of(Formatter.toObject(Formatter.toJSON(_userDTO),UserDTO.class),HttpStatus.OK,"get");
     }
 
@@ -77,7 +83,7 @@ public class UserDAO {
     public ResponseSchema<User> addNewAsset(@RequestParam  String governmentId, @RequestBody Map<String,String> asset) throws IOException {
         String userDetails = redis.getByString(governmentId);
         if(userDetails == null){
-            return  null;
+            return  ResponseSchema.of(new User(),HttpStatus.NOT_FOUND,"userNotFound");
         }
         User user = Formatter.convertToObject(userDetails, User.class);
         String id =  asset.get("assetId");

@@ -1,33 +1,38 @@
 package com.immutable.authentication;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-@RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AuthUserDTO user = new AuthUserDTO();
-        return new org.springframework.security.core.userdetails.User(
-                user.getUserName(),
-                user.getPassword(),
-                getAuthorities((ArrayList<String>) user.getRoles())
-        );
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    AuthenticationManager authManager;
+
+    @Autowired
+    private UserRepo repo;
+
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public Users register(Users user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        repo.save(user);
+        return user;
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(ArrayList<String> roles) {
-        return roles.stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    public String verify(Users user) {
+        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(user.getUsername());
+        } else {
+            return "fail";
+        }
     }
 }

@@ -6,10 +6,9 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication (exclude = {ErrorMvcAutoConfiguration
-		.class})
+@SpringBootApplication (exclude = {ErrorMvcAutoConfiguration.class})
 @ComponentScan(basePackages = {"com.immutable.request","com.dependencies.jedis"})
-public class ImmutableApplication {g
+public class ImmutableApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(ImmutableApplication.class, args);
