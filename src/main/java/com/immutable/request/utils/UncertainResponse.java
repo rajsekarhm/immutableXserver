@@ -1,4 +1,4 @@
 package com.immutable.request.utils;
 
-public class RequestUtils {
+public class UncertainResponse {
 }
