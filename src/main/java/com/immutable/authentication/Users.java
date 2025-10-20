@@ -1,5 +1,6 @@
 package com.immutable.authentication;
 
+import com.immutable.request.accounts.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -8,7 +9,24 @@ public class Users {
     @Id
     private int id;
     private String username;
-    private String password;
+    byte[] salt;
+    String hashedPassword;
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
 
     public int getId() {
         return id;
@@ -26,20 +44,14 @@ public class Users {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {
         return "Users{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                ", salt='" + salt + '\'' +
                 '}';
     }
 }
