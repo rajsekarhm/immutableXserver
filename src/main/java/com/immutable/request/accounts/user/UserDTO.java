@@ -1,10 +1,7 @@
 package com.immutable.request.accounts.user;
 
-import com.dependencies.jedis.IJedis;
-import com.dependencies.jedis.JedisImx;
 import com.immutable.request.assets.Asset;
 import com.immutable.request.token.Token;
-import com.immutable.request.utils.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 

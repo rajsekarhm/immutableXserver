@@ -1,7 +1,10 @@
 package com.immutable.request.accounts.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.HashSet;
 import java.util.List;
 
 public class User {
@@ -9,6 +12,7 @@ public class User {
     public String lastName;
     public String email;
     public String phoneNumber;
+    @JsonIgnore
     public String password;
     public String location;
     public Long governmentID;
@@ -16,8 +20,8 @@ public class User {
     public Boolean isAgent;
     public Long securityId;
     public Boolean isAuthForBuyAndSell;
-    public List<String> assetIds;
-    public  List<String> tokenIds;
+    public HashSet<String> assetIds;
+    public  HashSet<String> tokenIds;
     public User() {}
     @JsonCreator
     public User(
@@ -32,8 +36,8 @@ public class User {
             @JsonProperty("isAgent") Boolean isAgent,
             @JsonProperty("securityId") Long securityId,
             @JsonProperty("isAuthForBuyAndSell") Boolean isAuthForBuyAndSell,
-            @JsonProperty("assetIds") List<String> assetHolding,
-            @JsonProperty("tokenIds") List<String> tokenHolding
+            @JsonProperty("assetIds") HashSet<String> assetHolding,
+            @JsonProperty("tokenIds") HashSet<String> tokenHolding
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,11 +68,11 @@ public class User {
         this.isAuthForBuyAndSell = builder.isAuthForBuyAndSell;
     }
 
-    public List<String> getAssetIds() {
+    public HashSet<String> getAssetIds() {
         return assetIds;
     }
 
-    public List<String> getTokenIds() {
+    public HashSet<String> getTokenIds() {
         return tokenIds;
     }
 
@@ -129,8 +133,8 @@ public class User {
          Boolean isAgent;
          Long securityId;
          Boolean isAuthForBuyAndSell;
-         List<String> assetIds;
-         List<String> tokenIds;
+        HashSet<String> assetIds;
+        HashSet<String> tokenIds;
 
 
         public Builder setFirstName(String firstName) {
@@ -188,12 +192,12 @@ public class User {
             return this;
         }
 
-        public Builder setTokenIds(List<String> _tokenIds){
+        public Builder setTokenIds(HashSet<String> _tokenIds){
             this.tokenIds = _tokenIds;
             return this;
         }
 
-        public Builder setAssetIds(List<String> assetIds) {
+        public Builder setAssetIds(HashSet<String> assetIds) {
             this.assetIds = assetIds;
             return this;
 

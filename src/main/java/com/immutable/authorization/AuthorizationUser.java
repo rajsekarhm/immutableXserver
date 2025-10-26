@@ -8,7 +8,7 @@ public class AuthorizationUser implements IAuthorization{
         return  true;
     }
     public List<String> accessibilty(){
-        List<String> list = Arrays.asList("a");
+        List<String> list = Arrays.asList("auth");
         return  list;
     }
 }
