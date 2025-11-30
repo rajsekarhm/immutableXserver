@@ -12,7 +12,6 @@ public class User {
     public String lastName;
     public String email;
     public String phoneNumber;
-    @JsonIgnore
     public String password;
     public String location;
     public Long governmentID;
@@ -29,9 +28,9 @@ public class User {
             @JsonProperty("lastName") String lastName,
             @JsonProperty("email") String email,
             @JsonProperty("phoneNumber") String phoneNumber,
-            @JsonProperty("password") String password,
+            @JsonProperty(value="password", access = JsonProperty.Access.WRITE_ONLY) String password,
             @JsonProperty("location") String location,
-            @JsonProperty("governmentID") Long governmentID,
+            @JsonProperty("governmentID")  Long governmentID,
             @JsonProperty("edition") String edition,
             @JsonProperty("isAgent") Boolean isAgent,
             @JsonProperty("securityId") Long securityId,
@@ -92,6 +91,7 @@ public class User {
         return phoneNumber;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
