@@ -1,6 +1,5 @@
 package com.dependencies.utils;
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;

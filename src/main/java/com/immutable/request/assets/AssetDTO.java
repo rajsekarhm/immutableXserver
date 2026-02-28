@@ -1,9 +1,9 @@
 package com.immutable.request.assets;
 
 public class AssetDTO {
-    String userId;
-    String AssetId;
-    Asset asset;
+    private String userId;
+    private String assetId;
+    private Asset asset;
 
     public Asset getAsset() {
         return asset;
@@ -14,7 +14,7 @@ public class AssetDTO {
     }
 
     public String getAssetId() {
-        return AssetId;
+        return assetId;
     }
 
     public String getUserId() {
@@ -22,7 +22,7 @@ public class AssetDTO {
     }
 
     public void setAssetId(String assetId) {
-        AssetId = assetId;
+        this.assetId = assetId;
     }
 
     public void setUserId(String userId) {

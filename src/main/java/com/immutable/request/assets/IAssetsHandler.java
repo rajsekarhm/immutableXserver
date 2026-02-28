@@ -1,10 +1,12 @@
 package com.immutable.request.assets;
 
+import com.dependencies.utils.ResponseSchema;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.http.ResponseEntity;
 
 public interface IAssetsHandler <T>{
-    public  Object create(T asset);
-    public  Object  update(String id,T asset);
-    public  Object  get(String Id) throws JsonProcessingException;
-    public  Object  delete(String Id);
+    ResponseEntity<ResponseSchema<T>> create(T asset);
+    ResponseEntity<ResponseSchema<T>> update(String id, T asset);
+    ResponseEntity<? extends ResponseSchema<?>> get(String id) throws JsonProcessingException;
+    ResponseEntity<ResponseSchema<T>> delete(String id);
 }

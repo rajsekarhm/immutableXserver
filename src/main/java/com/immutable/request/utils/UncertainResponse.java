@@ -3,26 +3,26 @@ package com.immutable.request.utils;
 import com.immutable.request.accounts.user.UserDTO;
 
 public class UncertainResponse  extends UserDTO {
-    String DefaultError;
-    String Message;
+    private String defaultError;
+    private String message;
     public UncertainResponse(String err, String msg){
-        this.DefaultError = err;
-        this.Message = msg;
+        this.defaultError = err;
+        this.message = msg;
     }
 
     public String getDefaultError() {
-        return DefaultError;
+        return defaultError;
     }
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public void setDefaultError(String defaultError) {
-        DefaultError = defaultError;
+        this.defaultError = defaultError;
     }
 
     public void setMessage(String message) {
-        Message = message;
+        this.message = message;
     }
 }

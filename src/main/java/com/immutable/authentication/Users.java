@@ -1,6 +1,5 @@
 package com.immutable.authentication;
 
-import com.immutable.request.accounts.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 

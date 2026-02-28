@@ -1,7 +1,5 @@
 package com.immutable.request.token;
 
-import org.apache.kafka.common.protocol.types.Field;
-
 public class TokenDTO {
     String userId;
     String tokenId;

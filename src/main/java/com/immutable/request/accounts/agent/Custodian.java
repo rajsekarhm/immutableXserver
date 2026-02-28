@@ -1,71 +1,94 @@
 package com.immutable.request.accounts.agent;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.immutable.request.accounts.user.User;
 
 public class Custodian extends User {
     private long orgId;
     private long agentId;
+
+    public Custodian() {}
+
     private Custodian(Custodian.Builder builder){
         super(builder);
         this.orgId = builder.orgId;
         this.agentId = builder.agentId;
     }
-    public  long getOrgId(){
-        return  orgId;
+
+    @JsonCreator
+    public Custodian(
+            @JsonProperty("orgId") long orgId,
+            @JsonProperty("agentId") long agentId
+    ) {
+        this.orgId = orgId;
+        this.agentId = agentId;
     }
-    public  long getagentId(){
-        return  agentId;
+
+    public long getOrgId(){
+        return orgId;
     }
-    public static class Builder extends  User.Builder {
-         long orgId;
-         long agentId;
+    public long getAgentId(){
+        return agentId;
+    }
+
+    public static class Builder extends User.Builder {
+        long orgId;
+        long agentId;
 
         public Builder setUserName(String firstName) {
-            this.setFirstName(firstName);
+            super.setFirstName(firstName);
             return this;
         }
 
+        @Override
         public Builder setEmail(String email) {
-            this.setEmail(email);
+            super.setEmail(email);
             return this;
         }
 
+        @Override
         public Builder setIsAgent(Boolean isAgent) {
-            this.setIsAgent(isAgent);
+            super.setIsAgent(isAgent);
             return this;
         }
 
+        @Override
         public Builder setPhoneNumber(String phoneNumber) {
-            this.setPhoneNumber(phoneNumber);
+            super.setPhoneNumber(phoneNumber);
             return this;
         }
 
+        @Override
         public Builder setEdition(String edition) {
-            this.setEdition(edition);
+            super.setEdition(edition);
             return this;
         }
 
+        @Override
         public Builder setIsAuthForBuyAndSell(Boolean isAuthForBuyAndSell) {
-            this.setIsAuthForBuyAndSell(isAuthForBuyAndSell);
+            super.setIsAuthForBuyAndSell(isAuthForBuyAndSell);
             return this;
         }
 
+        @Override
         public Builder setGovernmentID(Long governmentID) {
-            this.setGovernmentID(governmentID);
+            super.setGovernmentID(governmentID);
             return this;
         }
 
-        public  Builder setOrgId(long _orgId){
+        public Builder setOrgId(long _orgId){
             this.orgId = _orgId;
-            return  this;
+            return this;
         }
 
         public Builder setAgentId(long _agentId){
             this.agentId = _agentId;
             return this;
         }
+
         public Custodian build(){
-            return  new Custodian(this);
+            return new Custodian(this);
         }
     }
 }

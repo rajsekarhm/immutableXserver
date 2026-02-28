@@ -6,11 +6,11 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Token {
-     String walletAddress;
-     String numberOfTokens;
-     String symbol;
-     String tokenName;
-     String tokenId;
+     private String walletAddress;
+     private String numberOfTokens;
+     private String symbol;
+     private String tokenName;
+     private String tokenId;
 
     public Token(){}
     @JsonCreator

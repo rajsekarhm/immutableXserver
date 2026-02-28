@@ -6,15 +6,15 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Asset {
-     String associatedUser;
-     String assetId;
-     String symbol;
-     String assetURI;
-     long value;
-     String assetAddress;
-     boolean isValidated;
-     boolean isForSale;
-     boolean isFungible;
+     private String associatedUser;
+     private String assetId;
+     private String symbol;
+     private String assetURI;
+     private long value;
+     private String assetAddress;
+     private boolean isValidated;
+     private boolean isForSale;
+     private boolean isFungible;
 
     public Asset() {}
 
@@ -77,7 +77,23 @@ public class Asset {
         return symbol;
     }
 
-    public  static  class  Builder{
+    public boolean isValidated() {
+        return isValidated;
+    }
+
+    public boolean isForSale() {
+        return isForSale;
+    }
+
+    public boolean isFungible() {
+        return isFungible;
+    }
+
+    public void setAssociatedUser(String associatedUser) {
+        this.associatedUser = associatedUser;
+    }
+
+    public static class Builder {
         String associatedUser;
         String assetId;
         String symbol;
